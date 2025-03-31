@@ -12,7 +12,8 @@ const game_model = {
       }
       return await Game.findByIdAndUpdate(
          game_id,
-         { 
+         {
+            // potentially add pending to status when players accept the move 
             $set: { 
                last_move: move,
                board_state: new_board_state

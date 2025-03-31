@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgt5m0tanj66i"]
+
+[ext_resource type="Texture2D" uid="uid://u6fhb8gu23s3" path="res://sprites/game_scene/background.png" id="1_ibkli"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(240.5, 400.5)
+scale = Vector2(0.443519, 0.416146)
+texture = ExtResource("1_ibkli")

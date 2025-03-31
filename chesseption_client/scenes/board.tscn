@@ -1,0 +1,206 @@
+[gd_scene load_steps=4 format=3 uid="uid://c57q0swcuoanf"]
+
+[ext_resource type="Script" uid="uid://b1gtpdx7ddh78" path="res://scripts/board.gd" id="1_nglv8"]
+[ext_resource type="PackedScene" uid="uid://dn7eptk71u41b" path="res://scenes/tile.tscn" id="2_tx6nw"]
+[ext_resource type="Texture2D" uid="uid://b6l50jwjx23q4" path="res://sprites/game_scene/sahovska_tabla.png" id="5_hjj25"]
+
+[node name="Board" type="Node2D"]
+script = ExtResource("1_nglv8")
+
+[node name="board_sprite" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(194, 192)
+scale = Vector2(0.386111, 0.386111)
+texture = ExtResource("5_hjj25")
+
+[node name="a1" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(18, 368)
+
+[node name="a2" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(18, 318)
+
+[node name="a3" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(18, 268)
+
+[node name="a4" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(18, 218)
+
+[node name="a5" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(18, 168)
+
+[node name="a6" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(18, 118)
+
+[node name="a7" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(18, 68)
+
+[node name="a8" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(18, 18)
+
+[node name="b1" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(68, 368)
+
+[node name="b2" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(68, 318)
+
+[node name="b3" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(68, 268)
+
+[node name="b4" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(68, 218)
+
+[node name="b5" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(68, 168)
+
+[node name="b6" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(68, 118)
+
+[node name="b7" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(68, 68)
+
+[node name="b8" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(68, 18)
+
+[node name="c1" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(118, 368)
+
+[node name="c2" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(118, 318)
+
+[node name="c3" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(118, 268)
+
+[node name="c4" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(118, 218)
+
+[node name="c5" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(118, 168)
+
+[node name="c6" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(118, 118)
+
+[node name="c7" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(118, 68)
+
+[node name="c8" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(118, 18)
+
+[node name="d1" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(168, 368)
+
+[node name="d2" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(168, 318)
+
+[node name="d3" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(168, 268)
+
+[node name="d4" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(168, 218)
+
+[node name="d5" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(168, 168)
+
+[node name="d6" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(168, 118)
+
+[node name="d7" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(168, 68)
+
+[node name="d8" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(168, 18)
+
+[node name="e1" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(218, 368)
+
+[node name="e2" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(218, 318)
+
+[node name="e3" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(218, 268)
+
+[node name="e4" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(218, 218)
+
+[node name="e5" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(218, 168)
+
+[node name="e6" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(218, 118)
+
+[node name="e7" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(218, 68)
+
+[node name="e8" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(218, 18)
+
+[node name="f1" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(268, 368)
+
+[node name="f2" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(268, 318)
+
+[node name="f3" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(268, 268)
+
+[node name="f4" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(268, 218)
+
+[node name="f5" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(268, 168)
+
+[node name="f6" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(268, 118)
+
+[node name="f7" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(268, 68)
+
+[node name="f8" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(268, 18)
+
+[node name="g1" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(318, 368)
+
+[node name="g2" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(318, 318)
+
+[node name="g3" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(318, 268)
+
+[node name="g4" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(318, 218)
+
+[node name="g5" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(318, 168)
+
+[node name="g6" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(318, 118)
+
+[node name="g7" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(318, 68)
+
+[node name="g8" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(318, 18)
+
+[node name="h1" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(368, 368)
+
+[node name="h2" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(368, 318)
+
+[node name="h3" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(368, 268)
+
+[node name="h4" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(368, 218)
+
+[node name="h5" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(368, 168)
+
+[node name="h6" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(368, 118)
+
+[node name="h7" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(368, 68)
+
+[node name="h8" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(368, 18)

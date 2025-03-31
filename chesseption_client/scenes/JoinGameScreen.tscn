@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://5arrwic0hntk"]
+
+[ext_resource type="Script" uid="uid://dnymebjefxl3x" path="res://scripts/join_game_screen.gd" id="1_4n145"]
+
+[node name="JoinGameScreen" type="Node2D"]
+script = ExtResource("1_4n145")
+
+[node name="JoinTwoPlayerGame" type="Button" parent="."]
+offset_left = 148.0
+offset_top = 165.0
+offset_right = 342.0
+offset_bottom = 236.0
+text = "Join two player game"
+
+[node name="JoinThreePlayerGame" type="Button" parent="."]
+offset_left = 148.0
+offset_top = 284.0
+offset_right = 342.0
+offset_bottom = 355.0
+text = "Join three player game"
+
+[node name="JoinFourPlayerGame" type="Button" parent="."]
+offset_left = 148.0
+offset_top = 406.0
+offset_right = 342.0
+offset_bottom = 477.0
+text = "Join four player game"
+
+[node name="CreateCustomGame" type="Button" parent="."]
+offset_left = 144.0
+offset_top = 616.0
+offset_right = 338.0
+offset_bottom = 687.0
+text = "Create custom game"
+
+[node name="back_to_main_menu" type="Button" parent="."]
+offset_left = 375.0
+offset_top = 743.0
+offset_right = 474.0
+offset_bottom = 795.0
+text = "Back
+"
+
+[connection signal="mouse_entered" from="JoinTwoPlayerGame" to="." method="_on_join_two_player_game_mouse_entered"]
+[connection signal="mouse_exited" from="JoinTwoPlayerGame" to="." method="_on_join_two_player_game_mouse_exited"]
+[connection signal="pressed" from="JoinTwoPlayerGame" to="." method="_on_join_two_player_game_pressed"]
+[connection signal="mouse_entered" from="JoinThreePlayerGame" to="." method="_on_join_three_player_game_mouse_entered"]
+[connection signal="mouse_exited" from="JoinThreePlayerGame" to="." method="_on_join_three_player_game_mouse_exited"]
+[connection signal="pressed" from="JoinThreePlayerGame" to="." method="_on_join_three_player_game_pressed"]
+[connection signal="mouse_entered" from="JoinFourPlayerGame" to="." method="_on_join_four_player_game_mouse_entered"]
+[connection signal="mouse_exited" from="JoinFourPlayerGame" to="." method="_on_join_four_player_game_mouse_exited"]
+[connection signal="pressed" from="JoinFourPlayerGame" to="." method="_on_join_four_player_game_pressed"]
+[connection signal="mouse_entered" from="CreateCustomGame" to="." method="_on_create_custom_game_mouse_entered"]
+[connection signal="mouse_exited" from="CreateCustomGame" to="." method="_on_create_custom_game_mouse_exited"]
+[connection signal="pressed" from="CreateCustomGame" to="." method="_on_create_custom_game_pressed"]
+[connection signal="mouse_entered" from="back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_entered"]
+[connection signal="mouse_exited" from="back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_exited"]
+[connection signal="pressed" from="back_to_main_menu" to="." method="_on_back_to_main_menu_pressed"]

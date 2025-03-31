@@ -8,11 +8,11 @@ const gameSchema = new mongoose.Schema({
       diamond_position: {type: String},
    },
    last_move: {
-      player_id: String,
-      move_piece: String,
-      from: String,
-      to: String,
-      lied: Boolean,
+      player_id: String, default : null,
+      move_piece: String, default : null,
+      from: String, default : null, 
+      to: String, default : null,
+      lied: Boolean, default : null,
    },
    status: {
       type: String,

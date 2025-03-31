@@ -11,5 +11,6 @@ router.post("/challenge_move", game_controller.challenge_move);
 
 // I guess we will need it
 router.get("state/:gameId", game_controller.get_game_state);
+router.post("/finish", game_controller.finish_game);
 
 module.exports = router;

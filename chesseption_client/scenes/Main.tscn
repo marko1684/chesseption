@@ -1,20 +1,24 @@
-[gd_scene load_steps=6 format=3 uid="uid://lpq42cincwa4"]
+[gd_scene load_steps=7 format=3 uid="uid://lpq42cincwa4"]
 
 [ext_resource type="Script" uid="uid://nuq08iqevd0d" path="res://scripts/Main.gd" id="1_rarhs"]
 [ext_resource type="PackedScene" uid="uid://uduuggs45ldx" path="res://scenes/main_menu.tscn" id="2_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dr5w8e5h3q3cq" path="res://scenes/ProfileScreen.tscn" id="3_c01mt"]
 [ext_resource type="PackedScene" uid="uid://bgt5m0tanj66i" path="res://scenes/Game.tscn" id="4_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://5arrwic0hntk" path="res://scenes/JoinGameScreen.tscn" id="4_vcsgt"]
+[ext_resource type="PackedScene" uid="uid://dmi5kyshq6kw2" path="res://scenes/OptionsScreen.tscn" id="5_c01mt"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rarhs")
 
 [node name="Main_menu" parent="." instance=ExtResource("2_vcsgt")]
 
+[node name="JoinGameScreen" parent="." instance=ExtResource("4_vcsgt")]
+visible = false
+
 [node name="ProfileScreen" parent="." instance=ExtResource("3_c01mt")]
 visible = false
 
-[node name="JoinGameScreen" parent="." instance=ExtResource("4_vcsgt")]
+[node name="OptionsScreen" parent="." instance=ExtResource("5_c01mt")]
 visible = false
 
 [node name="Game" parent="." instance=ExtResource("4_nxtc6")]

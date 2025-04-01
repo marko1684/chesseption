@@ -15,14 +15,22 @@ text = "Play"
 
 [node name="ProfileButton" type="Button" parent="."]
 offset_left = 147.0
-offset_top = 576.0
+offset_top = 592.0
 offset_right = 346.0
-offset_bottom = 672.0
+offset_bottom = 661.0
 text = "Profile"
+
+[node name="Options" type="Button" parent="."]
+offset_left = 147.0
+offset_top = 687.0
+offset_right = 346.0
+offset_bottom = 756.0
+text = "Options
+"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(240, 400)
+position = Vector2(241, 399)
 scale = Vector2(0.444907, 0.416927)
 texture = ExtResource("2_bqqt6")
 
@@ -32,3 +40,6 @@ texture = ExtResource("2_bqqt6")
 [connection signal="mouse_entered" from="ProfileButton" to="." method="_on_profile_button_mouse_entered"]
 [connection signal="mouse_exited" from="ProfileButton" to="." method="_on_profile_button_mouse_exited"]
 [connection signal="pressed" from="ProfileButton" to="." method="_on_profile_button_pressed"]
+[connection signal="mouse_entered" from="Options" to="." method="_on_options_mouse_entered"]
+[connection signal="mouse_exited" from="Options" to="." method="_on_options_mouse_exited"]
+[connection signal="pressed" from="Options" to="." method="_on_options_pressed"]

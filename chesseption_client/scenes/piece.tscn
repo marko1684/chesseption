@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bda5ymvpk1fh7"]
+
+[ext_resource type="Script" uid="uid://dyhqrmou3xmyh" path="res://scripts/piece.gd" id="1_s58gp"]
+[ext_resource type="Texture2D" uid="uid://c4kpy6wqpyamu" path="res://sprites/chess_pieces/beli_kralj.png" id="2_h2rng"]
+
+[node name="piece" type="Node2D"]
+script = ExtResource("1_s58gp")
+
+[node name="piece" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_h2rng")

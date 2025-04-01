@@ -1,9 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dr5w8e5h3q3cq"]
+[gd_scene load_steps=2 format=3 uid="uid://dmi5kyshq6kw2"]
 
-[ext_resource type="Script" uid="uid://m7knf1jtif1w" path="res://scripts/profile_screen.gd" id="1_0pa4v"]
+[ext_resource type="Script" uid="uid://2ptukqro6mxj" path="res://scripts/options_screen.gd" id="1_6pdmm"]
 
-[node name="ProfileScreen" type="Node2D"]
-script = ExtResource("1_0pa4v")
+[node name="OptionsScreen" type="Node2D"]
+script = ExtResource("1_6pdmm")
 
 [node name="Back_to_main_menu" type="Button" parent="."]
 offset_left = 374.0

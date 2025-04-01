@@ -1,10 +1,32 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgt5m0tanj66i"]
+[gd_scene load_steps=5 format=3 uid="uid://bgt5m0tanj66i"]
 
+[ext_resource type="Script" uid="uid://tpgg6ob81xsm" path="res://scripts/game.gd" id="1_78awf"]
+[ext_resource type="PackedScene" uid="uid://bda5ymvpk1fh7" path="res://scenes/piece.tscn" id="1_cpr0p"]
 [ext_resource type="Texture2D" uid="uid://u6fhb8gu23s3" path="res://sprites/game_scene/background.png" id="1_ibkli"]
+[ext_resource type="PackedScene" uid="uid://c57q0swcuoanf" path="res://scenes/board.tscn" id="2_qbsmt"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_78awf")
 
 [node name="Background" type="Sprite2D" parent="."]
+z_index = -1
 position = Vector2(240.5, 400.5)
 scale = Vector2(0.443519, 0.416146)
 texture = ExtResource("1_ibkli")
+
+[node name="Board" parent="." instance=ExtResource("2_qbsmt")]
+position = Vector2(47, 238)
+
+[node name="Pieces" type="Node2D" parent="."]
+
+[node name="White_piece" parent="Pieces" instance=ExtResource("1_cpr0p")]
+position = Vector2(-210.117, 353.139)
+
+[node name="Black_piece" parent="Pieces" instance=ExtResource("1_cpr0p")]
+position = Vector2(-210.117, 353.139)
+
+[node name="Red_piece" parent="Pieces" instance=ExtResource("1_cpr0p")]
+position = Vector2(-210.117, 353.139)
+
+[node name="Blue_piece" parent="Pieces" instance=ExtResource("1_cpr0p")]
+position = Vector2(-210.117, 353.139)

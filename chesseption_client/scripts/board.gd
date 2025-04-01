@@ -64,3 +64,8 @@ class_name Board extends Node2D
 @onready var h6 = $h6
 @onready var h7 = $h7
 @onready var h8 = $h8
+
+@onready var white_piece_position = a4
+@onready var black_piece_position = h4
+@onready var red_piece_position = e1
+@onready var blue_piece_position = e8

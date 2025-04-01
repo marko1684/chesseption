@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bgt5m0tanj66i"]
+[gd_scene load_steps=6 format=3 uid="uid://bgt5m0tanj66i"]
 
 [ext_resource type="Script" uid="uid://tpgg6ob81xsm" path="res://scripts/game.gd" id="1_78awf"]
 [ext_resource type="PackedScene" uid="uid://bda5ymvpk1fh7" path="res://scenes/piece.tscn" id="1_cpr0p"]
 [ext_resource type="Texture2D" uid="uid://u6fhb8gu23s3" path="res://sprites/game_scene/background.png" id="1_ibkli"]
 [ext_resource type="PackedScene" uid="uid://c57q0swcuoanf" path="res://scenes/board.tscn" id="2_qbsmt"]
+[ext_resource type="PackedScene" uid="uid://drfkvmmmwnkal" path="res://scenes/selection_window.tscn" id="4_s0nni"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_78awf")
@@ -16,6 +17,9 @@ texture = ExtResource("1_ibkli")
 
 [node name="Board" parent="." instance=ExtResource("2_qbsmt")]
 position = Vector2(47, 238)
+
+[node name="Selection_window" parent="." instance=ExtResource("4_s0nni")]
+position = Vector2(5, 625)
 
 [node name="Pieces" type="Node2D" parent="."]
 

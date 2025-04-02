@@ -4,6 +4,7 @@ class_name Tile extends Node2D
 
 var mouse_is_inside_this_square = false
 var tile_is_available_for_movement = false
+var tile_is_occupied = false
 
 signal piece_moved(new_tile: String)
 
@@ -17,9 +18,8 @@ func highlight_this_square_for_movement() -> void:
 	square.color = Color(0, 1, 0, 0.2)
 
 func highlight_this_square_for_attack() ->void:
-	square.color = Color(1,0,0,0.2)
+	square.color = Color(1,0,0,0.4)
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 

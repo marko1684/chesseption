@@ -2,6 +2,7 @@ class_name Game extends Node2D
 
 @onready var board = $Board
 @onready var selection_window: Selection_window = $Selection_window
+@onready var diamond = $Diamond
 
 @onready var white_piece = $Pieces/White_piece
 @onready var black_piece = $Pieces/Black_piece
@@ -28,18 +29,29 @@ func _ready() -> void:
 	
 	draw_your_selection_window()
 
+func your_turn() -> void:
+	free_all_ocupied_spaces()
+	draw_board()
+	#make a move
+	#update game state info
+	#send it to the server
+	
+func free_all_ocupied_spaces() -> void:
+	pass
 func _on_piece_moved(new_tile_name: String) -> void:
 	#puff.position = Board.get_node(your_king.your_tile_name).global_position		
 	#puff.animation.play("puff_animation")
+	board.get_node(NodePath(your_king_position)).tile_is_occupied = false
 
 	your_king_position = new_tile_name
-	
 	await get_tree().create_timer(0.6).timeout
-	
 	your_king.set_piece_sprite(your_piece)
 	await get_tree().create_timer(0.15).timeout
+	if check_if_tile_is_occupied(tile_name_to_matrix_representation(new_tile_name)):
+		remove_piece_from_this_tile(new_tile_name)
 	
 	your_king.position = board.get_node(new_tile_name).global_position + Vector2(0, -10)
+	board.get_node(new_tile_name).tile_is_occupied = true
 	
 	#if underlined_piece_that_was_pulled_out_of_the_box == your_king.this_piece:
 	#	MultiplayerManager.make_move(multiplayer.get_unique_id(), your_king.your_tile_name, your_king.this_piece, false)
@@ -48,7 +60,25 @@ func _on_piece_moved(new_tile_name: String) -> void:
 
 	unhighlight_all_squares()
 	#your_pieces.remove_underline()
-	
+
+func remove_piece_from_this_tile(new_tile_name: String) -> void:
+	if board.white_piece_position.name == new_tile_name:
+		board.white_piece_position = board.removed_pieces
+		white_piece.position = board.removed_pieces.global_position 
+	if board.black_piece_position.name == new_tile_name:
+		board.black_piece_position = board.removed_pieces
+		black_piece.position = board.removed_pieces.global_position 
+	if board.red_piece_position.name == new_tile_name:
+		board.red_piece_position = board.removed_pieces
+		red_piece.position = board.removed_pieces.global_position 
+	if board.blue_piece_position.name == new_tile_name:
+		board.blue_piece_position = board.removed_pieces
+		blue_piece.position = board.removed_pieces.global_position 
+
+	if board.diamond_position.name == new_tile_name:
+		board.diamond_position = board.removed_pieces
+		diamond.position = board.removed_pieces.global_position 
+		
 func draw_your_selection_window() -> void:
 	selection_window.set_your_color(your_color)
 	selection_window.connect("piece_chosen", Callable(self, "_on_piece_chosen"))
@@ -68,85 +98,280 @@ func set_your_king() -> void:
 	
 func draw_board() -> void:
 	white_piece.global_position = board.white_piece_position.global_position + Vector2(0, -10)
+	board.white_piece_position.tile_is_occupied = true
 	black_piece.global_position = board.black_piece_position.global_position + Vector2(0, -10)
-
+	board.black_piece_position.tile_is_occupied = true
+	
+	#red_piece.global_position = board.red_piece_position.global_position + Vector2(0, -10)
+	#board.red_piece_position.tile_is_occupied = true
+	#blue_piece.global_position = board.blue_piece_position.global_position + Vector2(0, -10)
+	#board.blue_piece_position.tile_is_occupied = true
+	
+	#THIS POSITION WILL BE ASSIGNED BY SERVER
+	board.diamond_position = board.get_node("c6")
+	diamond.position = board.diamond_position.global_position + Vector2(0, -10)
+	board.diamond_position.tile_is_occupied = true
+	
 func highlight_available_tiles() -> void:
 	var available_tiles_array: Array = []
+	var occupied_but_available_tiles_array: Array = []
 	var coord: Vector2 = tile_name_to_matrix_representation(your_king_position)
 	if your_piece == "pawn":
-		var new_coords = []
+		var new_coords_green = []
+		var new_coords_red = []
+		var next_tile
 		if your_color == "white":
-			new_coords.append(coord + Vector2(-1, 1))
-			new_coords.append(coord + Vector2(0, 1))
-			new_coords.append(coord + Vector2(1, 1))
+			next_tile = coord + Vector2(-1, 1)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+			next_tile = coord + Vector2(0, 1)
+			if !check_if_tile_is_occupied(next_tile):
+				new_coords_green.append(next_tile)
+			next_tile = coord + Vector2(1, 1)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
 		elif your_color == "black":
-			new_coords.append(coord + Vector2(-1, -1))
-			new_coords.append(coord + Vector2(0, -1))
-			new_coords.append(coord + Vector2(1, -1))
+			next_tile = coord + Vector2(-1, -1)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+			next_tile = coord + Vector2(0, -1)
+			if !check_if_tile_is_occupied(next_tile):
+				new_coords_green.append(next_tile)
+			next_tile = coord + Vector2(1, -1)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
 		elif your_color == "red":
-			new_coords.append(coord + Vector2(-1, -1))
-			new_coords.append(coord + Vector2(-1, 0))
-			new_coords.append(coord + Vector2(-1, 1))
+			next_tile = coord + Vector2(-1, -1)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+			next_tile = coord + Vector2(-1, 0)
+			if !check_if_tile_is_occupied(next_tile):
+				new_coords_green.append(next_tile)
+			next_tile = coord + Vector2(-1, 1)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
 		elif your_color == "blue":
-			new_coords.append(coord + Vector2(1, -1))
-			new_coords.append(coord + Vector2(1, 0))
-			new_coords.append(coord + Vector2(1, 1))
-		available_tiles_array = new_coords.filter(is_valid).map(matrix_representation_to_tile_name)
-		
+			next_tile = coord + Vector2(1, -1)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+			next_tile = coord + Vector2(1, 0)
+			if !check_if_tile_is_occupied(next_tile):
+				new_coords_green.append(next_tile)
+			next_tile = coord + Vector2(1, 1)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+		available_tiles_array = new_coords_green.filter(is_valid).map(matrix_representation_to_tile_name)
+		occupied_but_available_tiles_array = new_coords_red.filter(is_valid).map(matrix_representation_to_tile_name)
 	
 	if your_piece == "bishop":
-		var new_coords = []
-		for i in range(1,4):
-			new_coords.append(coord + Vector2(i,i))
-			new_coords.append(coord + Vector2(-i,i))
-			new_coords.append(coord + Vector2(i,-i))
-			new_coords.append(coord + Vector2(-i,-i))
-		available_tiles_array = new_coords.filter(is_valid).map(matrix_representation_to_tile_name)
-			
+		var new_coords_green = []
+		var new_coords_red = []
+		var next_tile
+		for i in range(1,4): #north-east direction
+			next_tile = coord + Vector2(i,i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		
+		for i in range(1,4): #north-west direction
+			next_tile = coord + Vector2(-i,i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+ 
+		for i in range(1,4): #south-east direction
+			next_tile = coord + Vector2(i,-i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		
+		for i in range(1,4): # south-west direction
+			next_tile = coord + Vector2(-i,-i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		available_tiles_array = new_coords_green.filter(is_valid).map(matrix_representation_to_tile_name)
+		occupied_but_available_tiles_array = new_coords_red.filter(is_valid).map(matrix_representation_to_tile_name)
+
 	if your_piece == "knight":
-		your_piece = "knight"
-		var new_coords = []
-		new_coords.append(coord + Vector2(1,2))
-		new_coords.append(coord + Vector2(1,-2))
-		new_coords.append(coord + Vector2(-1,2))
-		new_coords.append(coord + Vector2(-1,-2))
-		new_coords.append(coord + Vector2(2,1))
-		new_coords.append(coord + Vector2(2,-1))
-		new_coords.append(coord + Vector2(-2,1))
-		new_coords.append(coord + Vector2(-2,-1))
-		available_tiles_array = new_coords.filter(is_valid).map(matrix_representation_to_tile_name)
+		var new_coords_green = []
+		var new_coords_red = []
+		var next_tile
+		next_tile = coord + Vector2(1,2)
+		if check_if_tile_is_occupied(next_tile):
+			new_coords_red.append(next_tile)
+		else:
+			new_coords_green.append(next_tile)
+		next_tile = coord + Vector2(1,-2)
+		if check_if_tile_is_occupied(next_tile):
+			new_coords_red.append(next_tile)
+		else:
+			new_coords_green.append(next_tile)
+		next_tile = coord + Vector2(-1,2)
+		if check_if_tile_is_occupied(next_tile):
+			new_coords_red.append(next_tile)
+		else:
+			new_coords_green.append(next_tile)
+		next_tile = coord + Vector2(-1,-2)
+		if check_if_tile_is_occupied(next_tile):
+			new_coords_red.append(next_tile)
+		else:
+			new_coords_green.append(next_tile)
+		next_tile = coord + Vector2(2,1)
+		if check_if_tile_is_occupied(next_tile):
+			new_coords_red.append(next_tile)
+		else:
+			new_coords_green.append(next_tile)
+		next_tile = coord + Vector2(2,-1)
+		if check_if_tile_is_occupied(next_tile):
+			new_coords_red.append(next_tile)
+		else:
+			new_coords_green.append(next_tile)
+		next_tile = coord + Vector2(-2,1)
+		if check_if_tile_is_occupied(next_tile):
+			new_coords_red.append(next_tile)
+		else:
+			new_coords_green.append(next_tile)
+		next_tile = coord + Vector2(-2,-1)
+		if check_if_tile_is_occupied(next_tile):
+			new_coords_red.append(next_tile)
+		else:
+			new_coords_green.append(next_tile)
+
+		available_tiles_array = new_coords_green.filter(is_valid).map(matrix_representation_to_tile_name)
+		occupied_but_available_tiles_array = new_coords_red.filter(is_valid).map(matrix_representation_to_tile_name)
 
 		
 	if your_piece == "rook":
-		your_piece = "rook"
-		var new_coords = []
-		for i in range(1,4):
-			new_coords.append(coord + Vector2(0,i))
-			new_coords.append(coord + Vector2(0,-i))
-			new_coords.append(coord + Vector2(i,0))
-			new_coords.append(coord + Vector2(-i,0))
-		available_tiles_array = new_coords.filter(is_valid).map(matrix_representation_to_tile_name)
+		var new_coords_green = []
+		var new_coords_red = []
+		var next_tile
+		for i in range(1,4): #north-west direction
+			next_tile = coord + Vector2(0,i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		
+		for i in range(1,4): #north-west direction
+			next_tile = coord + Vector2(0,-i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+				
+		for i in range(1,4): #north-west direction
+			next_tile = coord + Vector2(i,0)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+				
+		for i in range(1,4): #north-west direction
+			next_tile = coord + Vector2(-i,0)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+				
+		available_tiles_array = new_coords_green.filter(is_valid).map(matrix_representation_to_tile_name)
+		occupied_but_available_tiles_array = new_coords_red.filter(is_valid).map(matrix_representation_to_tile_name)
 	
 	if your_piece == "queen":
-		your_piece = "queen"
-		var new_coords = []
-		for i in range(1,5):
-			new_coords.append(coord + Vector2(i,i))
-			new_coords.append(coord + Vector2(-i,i))
-			new_coords.append(coord + Vector2(i,-i))
-			new_coords.append(coord + Vector2(-i,-i))
-			new_coords.append(coord + Vector2(0,i))
-			new_coords.append(coord + Vector2(0,-i))
-			new_coords.append(coord + Vector2(i,0))
-			new_coords.append(coord + Vector2(-i,0))
-		available_tiles_array = new_coords.filter(is_valid).map(matrix_representation_to_tile_name)
+		var new_coords_green = []
+		var new_coords_red = []
+		var next_tile
+		for i in range(1,5): #north-west direction
+			next_tile = coord + Vector2(i,i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		
+		for i in range(1,5): #south-west direction
+			next_tile = coord + Vector2(i,-i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		
+		for i in range(1,5): #north-west direction
+			next_tile = coord + Vector2(-i,i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		
+		for i in range(1,5): #south-west direction
+			next_tile = coord + Vector2(-i,-i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+				
+		for i in range(1,5): #east direction
+			next_tile = coord + Vector2(i,0)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+				
+		for i in range(1,5): #west direction
+			next_tile = coord + Vector2(-i,0)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		
+		for i in range(1,5): #north direction
+			next_tile = coord + Vector2(0,i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+		
+		for i in range(1,5): #south direction
+			next_tile = coord + Vector2(0,-i)
+			if check_if_tile_is_occupied(next_tile):
+				new_coords_red.append(next_tile)
+				break
+			else:
+				new_coords_green.append(next_tile)
+
+		available_tiles_array = new_coords_green.filter(is_valid).map(matrix_representation_to_tile_name)
+		occupied_but_available_tiles_array = new_coords_red.filter(is_valid).map(matrix_representation_to_tile_name)
 		
 	for tile in board.get_children():
 		if tile.name in available_tiles_array:
 			if tile is Tile:
 				tile.highlight_this_square_for_movement()
 				tile.tile_is_available_for_movement = true
-				
+	
+	for tile in board.get_children():
+		if tile.name in occupied_but_available_tiles_array:
+			if tile is Tile:
+				tile.highlight_this_square_for_attack()
+				tile.tile_is_available_for_movement = true
+	
 func unhighlight_all_squares() -> void:
 	for tile in board.get_children():
 		if tile is Tile:
@@ -159,7 +384,15 @@ func is_valid(position: Vector2) -> bool:
 	if position.x > 7 or position.y > 7:
 		return false
 	return true
-	
+
+func check_if_tile_is_occupied(matrix_representation: Vector2) -> bool:
+	var tile_name = matrix_representation_to_tile_name(matrix_representation)
+	var tile = board.get_node(tile_name)
+	if is_valid(matrix_representation) and  tile.tile_is_occupied == true:
+		return true
+	else:
+		return false
+		
 func tile_name_to_matrix_representation(tile_name: String) -> Vector2:
 	var column_letter = tile_name[0]
 	var row_number = tile_name[1].to_int() - 1

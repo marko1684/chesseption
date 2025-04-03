@@ -38,6 +38,7 @@ func your_turn() -> void:
 	draw_board()
 	draw_your_selection_window()
 	var piece_name = get_random_piece_from_the_box(box)
+	print(box) #for testing only
 	selection_window.underline_this_piece(piece_name)
 	#make a move
 	#update game state info

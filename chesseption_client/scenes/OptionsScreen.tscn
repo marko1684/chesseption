@@ -54,3 +54,6 @@ text = "Rules"
 [connection signal="pressed" from="Back_to_main_menu" to="." method="_on_back_to_main_menu_pressed"]
 [connection signal="value_changed" from="Music_slider" to="." method="_on_h_slider_value_changed"]
 [connection signal="value_changed" from="SoundFX_slider" to="." method="_on_sound_fx_slider_value_changed"]
+[connection signal="mouse_entered" from="Rules" to="." method="_on_rules_mouse_entered"]
+[connection signal="mouse_exited" from="Rules" to="." method="_on_rules_mouse_exited"]
+[connection signal="pressed" from="Rules" to="." method="_on_rules_pressed"]

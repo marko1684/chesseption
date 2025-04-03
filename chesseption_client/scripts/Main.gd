@@ -31,16 +31,22 @@ func _ready() -> void:
 
 	
 func _on_music_volume_changed(value: int) -> void:
-	var min_db = -80
+	var min_db = -50
 	var max_db = 0
 	var volume_db = lerp(min_db, max_db, value / 10.0)
-	music_player.volume_db = volume_db
+	if value == 0:
+		music_player.volume_db = -100
+	else:
+		music_player.volume_db = volume_db
 	
 func _on_soundFX_volume_changed(value: int) -> void:
-	var min_db = -80 
-	var max_db = 0 
+	var min_db = -50
+	var max_db = 0
 	var volume_db = lerp(min_db, max_db, value / 10.0)
-	soundFX_player.volume_db = volume_db
+	if value == 0:
+		music_player.volume_db = -100
+	else:
+		music_player.volume_db = volume_db
 
 
 func _on_back_to_options_screen() -> void:

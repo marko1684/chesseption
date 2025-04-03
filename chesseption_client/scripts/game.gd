@@ -3,11 +3,15 @@ class_name Game extends Node2D
 @onready var board = $Board
 @onready var selection_window: Selection_window = $Selection_window
 @onready var diamond = $Diamond
+@onready var puff = $Puff
 
 @onready var white_piece = $Pieces/White_piece
 @onready var black_piece = $Pieces/Black_piece
 @onready var red_piece = $Pieces/Red_piece
 @onready var blue_piece = $Pieces/Blue_piece
+
+@onready var box: Array = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] #This is temporary, real box will be assigned by the server
+
 
 var your_color = ""
 var your_piece = ""
@@ -25,22 +29,51 @@ func _ready() -> void:
 			tile.connect("piece_moved", Callable(self, "_on_piece_moved"))
 			
 	set_your_king()
-	draw_board()
+	diamond.animation.play("diamond_animation")
 	
-	draw_your_selection_window()
-
+	your_turn()
+	
 func your_turn() -> void:
 	free_all_ocupied_spaces()
 	draw_board()
+	draw_your_selection_window()
+	var piece_name = get_random_piece_from_the_box(box)
+	selection_window.underline_this_piece(piece_name)
 	#make a move
 	#update game state info
 	#send it to the server
+
+func get_random_piece_from_the_box(box) -> String:
+	var available_indexes = []
+	
+	for i in range(box.size()):
+		if box[i] == 1:
+			available_indexes.append(i)
+
+	if available_indexes.is_empty():
+		return "box is empty"
+	
+	var chosen_index = available_indexes[randi() % available_indexes.size()]
+	box[chosen_index] = 0
+
+	if chosen_index <= 7:
+		return "pawn"
+	elif chosen_index <= 9:
+		return "bishop"
+	elif chosen_index <= 11:
+		return "knight"
+	elif chosen_index <= 13:
+		return "rook"
+	elif chosen_index == 14:
+		return "queen"
+	else:
+		return "something went wrong"
 	
 func free_all_ocupied_spaces() -> void:
 	pass
 func _on_piece_moved(new_tile_name: String) -> void:
-	#puff.position = Board.get_node(your_king.your_tile_name).global_position		
-	#puff.animation.play("puff_animation")
+	puff.position = board.get_node(NodePath(your_king_position)).global_position
+	puff.animation.play("puff_animation")
 	board.get_node(NodePath(your_king_position)).tile_is_occupied = false
 
 	your_king_position = new_tile_name
@@ -52,14 +85,23 @@ func _on_piece_moved(new_tile_name: String) -> void:
 	
 	your_king.position = board.get_node(new_tile_name).global_position + Vector2(0, -10)
 	board.get_node(new_tile_name).tile_is_occupied = true
-	
 	#if underlined_piece_that_was_pulled_out_of_the_box == your_king.this_piece:
 	#	MultiplayerManager.make_move(multiplayer.get_unique_id(), your_king.your_tile_name, your_king.this_piece, false)
 	#else:
 	#	MultiplayerManager.make_move(multiplayer.get_unique_id(), your_king.your_tile_name, your_king.this_piece, true)
-
+	
+	if your_color == "white":
+		board.white_piece_position = board.get_node(NodePath(your_king_position))
+	if your_color == "black":
+		board.black_piece_position = board.get_node(NodePath(your_king_position))
+	if your_color == "red":
+		board.red_piece_position = board.get_node(NodePath(your_king_position))
+	if your_color == "blue":
+		board.blue_piece_position = board.get_node(NodePath(your_king_position))
+		
 	unhighlight_all_squares()
-	#your_pieces.remove_underline()
+	selection_window.remove_underline()
+	your_turn()
 
 func remove_piece_from_this_tile(new_tile_name: String) -> void:
 	if board.white_piece_position.name == new_tile_name:
@@ -77,8 +119,8 @@ func remove_piece_from_this_tile(new_tile_name: String) -> void:
 
 	if board.diamond_position.name == new_tile_name:
 		board.diamond_position = board.removed_pieces
-		diamond.position = board.removed_pieces.global_position 
-		
+		diamond.position = board.removed_pieces.global_position
+
 func draw_your_selection_window() -> void:
 	selection_window.set_your_color(your_color)
 	selection_window.connect("piece_chosen", Callable(self, "_on_piece_chosen"))
@@ -109,7 +151,7 @@ func draw_board() -> void:
 	
 	#THIS POSITION WILL BE ASSIGNED BY SERVER
 	board.diamond_position = board.get_node("c6")
-	diamond.position = board.diamond_position.global_position + Vector2(0, -10)
+	diamond.position = board.diamond_position.global_position + Vector2(0, 0)
 	board.diamond_position.tile_is_occupied = true
 	
 func highlight_available_tiles() -> void:
@@ -387,7 +429,9 @@ func is_valid(position: Vector2) -> bool:
 
 func check_if_tile_is_occupied(matrix_representation: Vector2) -> bool:
 	var tile_name = matrix_representation_to_tile_name(matrix_representation)
-	var tile = board.get_node(tile_name)
+	var tile = null
+	if board.has_node(tile_name):
+		tile = board.get_node(tile_name)
 	if is_valid(matrix_representation) and  tile.tile_is_occupied == true:
 		return true
 	else:

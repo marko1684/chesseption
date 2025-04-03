@@ -5,6 +5,13 @@ class_name Selection_window extends Node2D
 @onready var knight = $knight
 @onready var rook = $rook
 @onready var queen =  $queen
+
+@onready var underline_1 = $underline1
+@onready var underline_2 = $underline2
+@onready var underline_3 = $underline3
+@onready var underline_4 = $underline4
+@onready var underline_5 = $underline5
+
 signal piece_chosen(piece_name: String)
 
 var your_color = ""
@@ -50,3 +57,99 @@ func set_selection_pices_color_to_your_color() -> void:
 		knight.icon = load("res://sprites/chess_pieces/plavi_konj.png")
 		rook.icon = load("res://sprites/chess_pieces/plavi_top.png")
 		queen.icon = load("res://sprites/chess_pieces/plava_kraljica.png")
+
+
+func mandatory_roulette_animation() -> void:
+	underline_1.show()
+	await get_tree().create_timer(0.1).timeout
+	underline_1.hide()
+	underline_2.show()
+	await get_tree().create_timer(0.1).timeout
+	underline_2.hide()
+	underline_3.show()
+	await get_tree().create_timer(0.1).timeout
+	underline_3.hide()
+	underline_4.show()
+	await get_tree().create_timer(0.1).timeout
+	underline_4.hide()
+	underline_5.show()
+	await get_tree().create_timer(0.1).timeout
+	underline_5.hide()
+	underline_1.show()
+	await get_tree().create_timer(0.2).timeout
+	underline_1.hide()
+	underline_2.show()
+	await get_tree().create_timer(0.2).timeout
+	underline_2.hide()
+	underline_3.show()
+	await get_tree().create_timer(0.2).timeout
+	underline_3.hide()
+	underline_4.show()
+	await get_tree().create_timer(0.2).timeout
+	underline_4.hide()
+	underline_5.show()
+	await get_tree().create_timer(0.2).timeout
+	underline_5.hide()
+	
+func underline_this_piece(piece_name: String):
+	await mandatory_roulette_animation()
+	if piece_name == "pawn":
+		underline_1.show()
+	if piece_name == "bishop":
+		underline_1.show()
+		await get_tree().create_timer(0.25).timeout
+		underline_1.hide()
+		underline_2.show()
+	if piece_name == "knight":
+		underline_1.show()
+		await get_tree().create_timer(0.25).timeout
+		underline_1.hide()
+		underline_2.show()
+		await get_tree().create_timer(0.3).timeout
+		underline_2.hide()
+		underline_3.show()
+	if piece_name == "rook":
+		underline_1.show()
+		await get_tree().create_timer(0.25).timeout
+		underline_1.hide()
+		underline_2.show()
+		await get_tree().create_timer(0.3).timeout
+		underline_2.hide()
+		underline_3.show()
+		await get_tree().create_timer(0.35).timeout
+		underline_3.hide()
+		underline_4.show()
+	if piece_name == "queen":
+		underline_1.show()
+		await get_tree().create_timer(0.25).timeout
+		underline_1.hide()
+		underline_2.show()
+		await get_tree().create_timer(0.3).timeout
+		underline_2.hide()
+		underline_3.show()
+		await get_tree().create_timer(0.35).timeout
+		underline_3.hide()
+		underline_4.show()
+		await get_tree().create_timer(0.4).timeout
+		underline_4.hide()
+		underline_5.show()
+		
+func underline_this_piece2(piece_name: String):
+	underline_this_piece(piece_name)
+	if piece_name == "pawn":
+		underline_1.show()
+	if piece_name == "bishop":
+		underline_2.show()
+	if piece_name == "knight":
+		underline_3.show()
+	if piece_name == "rook":
+		underline_4.show()
+	if piece_name == "queen":
+		underline_5.show()
+
+func remove_underline() -> void:
+	underline_1.hide()
+	underline_2.hide()
+	underline_3.hide()
+	underline_4.hide()
+	underline_5.hide()

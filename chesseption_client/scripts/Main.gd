@@ -7,7 +7,8 @@ class_name Main extends Node2D
 @onready var options_screen = $OptionsScreen
 @onready var end_game_screen = null #TODO
 
-@onready var audio_player = $AudioStreamPlayer2D
+@onready var music_player = $Music_player
+@onready var soundFX_player = $SoundFX_player
 
 
 func _ready() -> void:
@@ -21,9 +22,24 @@ func _ready() -> void:
 	join_game_screen.connect("create_custom_game", Callable(self, "_on_create_custom_game"))
 	profile_screen.connect("back_to_main_menu_button_pressed", Callable(self, "_on_exit_profile_view"))
 	options_screen.connect("back_to_main_menu_button_pressed", Callable(self, "_on_exit_options_view"))
+	options_screen.connect("music_volume_changed", Callable(self, "_on_music_volume_changed"))
+	options_screen.connect("soundFX_volume_changed", Callable(self, "_on_soundFX_volume_changed"))
 
 	play_song("res://audio/doodle_song.mp3")
 
+func _on_music_volume_changed(value: int) -> void:
+	var min_db = -80
+	var max_db = 0
+	var volume_db = lerp(min_db, max_db, value / 10.0)
+	music_player.volume_db = volume_db
+	
+func _on_soundFX_volume_changed(value: int) -> void:
+	var min_db = -80 
+	var max_db = 0 
+	var volume_db = lerp(min_db, max_db, value / 10.0)
+	soundFX_player.volume_db = volume_db
+	
+	
 func _on_exit_profile_view() -> void:
 	profile_screen.hide()
 	main_menu.show()
@@ -62,8 +78,8 @@ func _on_view_options_button_pressed() -> void:
 	
 func play_song(path_to_song: String):
 	var song = load(path_to_song)
-	audio_player.stream = song
-	audio_player.play()
+	music_player.stream = song
+	music_player.play()
 
 func pause_song():
-	audio_player.stop()
+	music_player.stop()

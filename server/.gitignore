@@ -47,3 +47,6 @@ Thumbs.db
 
 # Godot-related files (if any)
 .import/
+
+# auth
+firebase-admin.json

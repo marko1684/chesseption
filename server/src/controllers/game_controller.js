@@ -64,6 +64,18 @@ const gameController = {
             res.status(500).json({ error: error.message });
         }
     },
+    async accept_move(req, res) {
+        try {
+            const { game_id, player_id } = req.body;
+            const updated_game = await game_model.accept_move(
+                game_id,
+                player_id
+            );
+            res.json(updated_game);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
 };
 
 module.exports = gameController;

@@ -1,7 +1,78 @@
 const Game = require('../config/db');
 
+const possible_positions = [
+    'a1',
+    'a2',
+    'a3',
+    // 'a4',
+    'a5',
+    'a6',
+    'a7',
+    'a8',
+    'b1',
+    'b2',
+    'b3',
+    'b4',
+    'b5',
+    'b6',
+    'b7',
+    'b8',
+    'c1',
+    'c2',
+    'c3',
+    'c4',
+    'c5',
+    'c6',
+    'c7',
+    'c8',
+    'd1',
+    'd2',
+    'd3',
+    'd4',
+    'd5',
+    'd6',
+    'd7',
+    // 'd8',
+    // 'e1',
+    'e2',
+    'e3',
+    'e4',
+    'e5',
+    'e6',
+    'e7',
+    'e8',
+    'f1',
+    'f2',
+    'f3',
+    'f4',
+    'f5',
+    'f6',
+    'f7',
+    'f8',
+    'g1',
+    'g2',
+    'g3',
+    'g4',
+    'g5',
+    'g6',
+    'g7',
+    'g8',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    // 'h5',
+    'h6',
+    'h7',
+    'h8',
+];
+
 const game_model = {
     async create_game(game_id, players, board_state) {
+        board_state.diamond_position =
+            possible_positions[
+                Math.floor(Math.random() * possible_positions.length)
+            ];
         return await Game.create({
             game_id,
             players,
@@ -9,7 +80,7 @@ const game_model = {
         });
     },
 
-    async make_move(game_id, move, new_board_state) {
+    async make_move(game_id) {
         const current_game = await Game.findById(game_id);
         if (!current_game) {
             throw new Error('Game not found');
@@ -46,11 +117,13 @@ const game_model = {
             throw new Error('Game not found');
         }
 
-        if (current_game.last_move.lied === true) {
+        if (current_game.lied === true) {
             current_game.status = 'challangedblabla';
 
-            current_game.last_move.lied = false;
-            current_game.board_state = current_game.last_move.board_state;
+            current_game.board_state.player_positions =
+                current_game.last_move.board_state.player_positions;
+            current_game.board_state.diamond_position =
+                current_game.last_move.board_state.diamond_position;
 
             current_game.board_state.player_positions.get(player1_id).points +=
                 1;
@@ -62,5 +135,26 @@ const game_model = {
         }
 
         await current_game.save();
+    },
+
+    async accept_move(game_id, player_id) {
+        const current_game = await Game.findById(game_id);
+        if (!current_game) {
+            throw new Error('Game not found');
+        }
+
+        const index = players.findIndex(
+            (player) => player.player_id === player_id
+        );
+        current_game.accepted[playerIndex].accept = 1;
+
+        const allAccepted = accepted.every((entry) => entry.accept === 1);
+        if (allAccepted === true) {
+            current_game.accepted = current_game.accepted.map(() => ({
+                accept: 0,
+            }));
+        }
+        await current_game.save();
+        return current_game;
     },
 };

@@ -44,9 +44,9 @@ func _on_soundFX_volume_changed(value: int) -> void:
 	var max_db = 0
 	var volume_db = lerp(min_db, max_db, value / 10.0)
 	if value == 0:
-		music_player.volume_db = -100
+		soundFX_player.volume_db = -100
 	else:
-		music_player.volume_db = volume_db
+		soundFX_player.volume_db = volume_db
 
 
 func _on_back_to_options_screen() -> void:

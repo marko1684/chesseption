@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bgt5m0tanj66i"]
+[gd_scene load_steps=9 format=3 uid="uid://bgt5m0tanj66i"]
 
 [ext_resource type="Script" uid="uid://tpgg6ob81xsm" path="res://scripts/game.gd" id="1_78awf"]
 [ext_resource type="PackedScene" uid="uid://bda5ymvpk1fh7" path="res://scenes/piece.tscn" id="1_cpr0p"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://drfkvmmmwnkal" path="res://scenes/selection_window.tscn" id="4_s0nni"]
 [ext_resource type="PackedScene" uid="uid://cmsok1lo6sqj8" path="res://scenes/diamond.tscn" id="6_aug50"]
 [ext_resource type="PackedScene" uid="uid://domgdf01oopn0" path="res://scenes/puff.tscn" id="7_kiw3p"]
+[ext_resource type="PackedScene" uid="uid://dw0hpbxlwvypv" path="res://scenes/Challange_a_player_window.tscn" id="8_400sg"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_78awf")
@@ -41,3 +42,8 @@ position = Vector2(-210.117, 353.139)
 position = Vector2(-219, 264)
 
 [node name="Puff" parent="." instance=ExtResource("7_kiw3p")]
+
+[node name="ChallangeAPlayerWindow" parent="." instance=ExtResource("8_400sg")]
+visible = false
+z_index = 36
+position = Vector2(2, 631)

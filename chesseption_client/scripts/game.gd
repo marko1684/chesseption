@@ -4,6 +4,7 @@ class_name Game extends Node2D
 @onready var selection_window: Selection_window = $Selection_window
 @onready var diamond = $Diamond
 @onready var puff = $Puff
+@onready var challange_window = $ChallangeAPlayerWindow
 
 @onready var white_piece = $Pieces/White_piece
 @onready var black_piece = $Pieces/Black_piece
@@ -24,6 +25,8 @@ func _ready() -> void:
 	red_piece.set_piece_color("red")
 	blue_piece.set_piece_color("blue")
 	
+	challange_window.connect("move_challanged", Callable(self, ("_on_move_challanged")))
+	
 	for tile in board.get_children():
 		if tile is Tile:
 			tile.connect("piece_moved", Callable(self, "_on_piece_moved"))
@@ -32,6 +35,12 @@ func _ready() -> void:
 	diamond.animation.play("diamond_animation")
 	
 	your_turn()
+
+func _on_move_challanged() -> void:
+	challange_window.hide()
+	#either calculate new board state based of player lied or diidnt and send it to server, 
+	#or just send it to the server and let it calcualte new board state.
+	#Either way server sends new board state to every player with message playerX challanged playerY and playerY lied/diidnt lie
 	
 func your_turn() -> void:
 	free_all_ocupied_spaces()
@@ -102,8 +111,10 @@ func _on_piece_moved(new_tile_name: String) -> void:
 		
 	unhighlight_all_squares()
 	selection_window.remove_underline()
+	
 	your_turn()
-
+	challange_window.show()
+	
 func remove_piece_from_this_tile(new_tile_name: String) -> void:
 	if board.white_piece_position.name == new_tile_name:
 		board.white_piece_position = board.removed_pieces

@@ -155,7 +155,10 @@ func draw_board() -> void:
 	board.white_piece_position.tile_is_occupied = true
 	black_piece.global_position = board.black_piece_position.global_position + Vector2(0, -10)
 	board.black_piece_position.tile_is_occupied = true
-	
+	red_piece.global_position = board.red_piece_position.global_position + Vector2(0, -10)
+	board.red_piece_position.tile_is_occupied = true
+	blue_piece.global_position = board.blue_piece_position.global_position + Vector2(0, -10)
+	board.blue_piece_position.tile_is_occupied = true
 	#red_piece.global_position = board.red_piece_position.global_position + Vector2(0, -10)
 	#board.red_piece_position.tile_is_occupied = true
 	#blue_piece.global_position = board.blue_piece_position.global_position + Vector2(0, -10)

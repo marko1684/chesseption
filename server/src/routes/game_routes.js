@@ -5,7 +5,7 @@ const game_controller = require('../controllers/game_controller');
 // routes
 
 router.post('/create', game_controller.create_game);
-router.post('/join', game_controller.join_game);
+router.post('/join_lobby', game_controller.join_lobby);
 router.post('/make_move', game_controller.make_move);
 router.post('/challenge_move', game_controller.challenge_move);
 router.post('/accept_move', game_controller.accept_move);

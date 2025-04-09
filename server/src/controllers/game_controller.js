@@ -1,4 +1,5 @@
 const game_model = require('../models/game_model');
+const lobby_model = require('../models/lobby_model');
 
 const gameController = {
     async create_game(req, res) {
@@ -72,6 +73,16 @@ const gameController = {
                 player_id
             );
             res.json(updated_game);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+
+    async join_lobby(player_id, game_type) {
+        try {
+            const { player_id, game_type } = req.body;
+            const game_id = await lobby_model.join_lobby(game_id, player_id);
+            res.json(game_id);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

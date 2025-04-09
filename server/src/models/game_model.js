@@ -1,5 +1,7 @@
 const Game = require('../config/db');
 
+const starting_positions = ['a4k', 'd8k', 'e1k', 'h5k'];
+
 const possible_positions = [
     'a1',
     'a2',
@@ -69,15 +71,28 @@ const possible_positions = [
 
 const game_model = {
     async create_game(game_id, players, board_state) {
-        board_state.diamond_position =
-            possible_positions[
-                Math.floor(Math.random() * possible_positions.length)
-            ];
+        board_state.diamond_position = possible_positions[Math.floor(Math.random() * possible_positions.length)];
         return await Game.create({
             game_id,
             players,
             board_state: board_state,
         });
+    },
+
+    async create_game(lobby) {
+        const new_game = new Game({
+            game_id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
+            players: lobby.players,
+            board_state: {
+                player_positions,
+                diamond_position: possible_positions[Math.floor(Math.random() * possible_positions.length)],
+            },
+
+            last_move: null,
+            status: 'in_progress',
+        });
+
+        await newGame.save();
     },
 
     async make_move(game_id) {
@@ -120,18 +135,13 @@ const game_model = {
         if (current_game.lied === true) {
             current_game.status = 'challangedblabla';
 
-            current_game.board_state.player_positions =
-                current_game.last_move.board_state.player_positions;
-            current_game.board_state.diamond_position =
-                current_game.last_move.board_state.diamond_position;
+            current_game.board_state.player_positions = current_game.last_move.board_state.player_positions;
+            current_game.board_state.diamond_position = current_game.last_move.board_state.diamond_position;
 
-            current_game.board_state.player_positions.get(player1_id).points +=
-                1;
-            current_game.board_state.player_positions.get(player2_id).points -=
-                1;
+            current_game.board_state.player_positions.get(player1_id).points += 1;
+            current_game.board_state.player_positions.get(player2_id).points -= 1;
         } else {
-            current_game.board_state.player_positions.get(player1_id).points -=
-                1;
+            current_game.board_state.player_positions.get(player1_id).points -= 1;
         }
 
         await current_game.save();
@@ -143,9 +153,7 @@ const game_model = {
             throw new Error('Game not found');
         }
 
-        const index = players.findIndex(
-            (player) => player.player_id === player_id
-        );
+        const index = players.findIndex((player) => player.player_id === player_id);
         current_game.accepted[playerIndex].accept = 1;
 
         const allAccepted = accepted.every((entry) => entry.accept === 1);

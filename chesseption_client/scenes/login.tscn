@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx8e53ul241nt"]
+
+[ext_resource type="Script" uid="uid://criru1hiu8mys" path="res://scripts/login.gd" id="1_pymad"]
+
+[node name="Login" type="Node2D"]
+script = ExtResource("1_pymad")
+
+[node name="google_login_button" type="Button" parent="."]
+offset_left = 179.0
+offset_top = 561.0
+offset_right = 363.0
+offset_bottom = 679.0
+text = "login via google"
+
+[connection signal="pressed" from="google_login_button" to="." method="_on_google_login_button_pressed"]

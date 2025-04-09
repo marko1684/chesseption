@@ -6,38 +6,38 @@
 script = ExtResource("1_4n145")
 
 [node name="JoinTwoPlayerGame" type="Button" parent="."]
-offset_left = 148.0
-offset_top = 165.0
-offset_right = 342.0
-offset_bottom = 236.0
+offset_left = 174.0
+offset_top = 345.0
+offset_right = 368.0
+offset_bottom = 416.0
 text = "Join two player game"
 
 [node name="JoinThreePlayerGame" type="Button" parent="."]
-offset_left = 148.0
-offset_top = 284.0
-offset_right = 342.0
-offset_bottom = 355.0
+offset_left = 174.0
+offset_top = 464.0
+offset_right = 368.0
+offset_bottom = 535.0
 text = "Join three player game"
 
 [node name="JoinFourPlayerGame" type="Button" parent="."]
-offset_left = 148.0
-offset_top = 406.0
-offset_right = 342.0
-offset_bottom = 477.0
+offset_left = 174.0
+offset_top = 586.0
+offset_right = 368.0
+offset_bottom = 657.0
 text = "Join four player game"
 
 [node name="CreateCustomGame" type="Button" parent="."]
-offset_left = 144.0
-offset_top = 616.0
-offset_right = 338.0
-offset_bottom = 687.0
+offset_left = 170.0
+offset_top = 796.0
+offset_right = 364.0
+offset_bottom = 867.0
 text = "Create custom game"
 
 [node name="back_to_main_menu" type="Button" parent="."]
-offset_left = 375.0
-offset_top = 743.0
-offset_right = 474.0
-offset_bottom = 795.0
+offset_left = 397.0
+offset_top = 1103.0
+offset_right = 496.0
+offset_bottom = 1155.0
 text = "Back
 "
 

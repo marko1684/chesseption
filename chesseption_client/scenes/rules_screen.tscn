@@ -6,17 +6,17 @@
 script = ExtResource("1_cd6i5")
 
 [node name="Label" type="Label" parent="."]
-offset_left = 149.0
-offset_top = 37.0
-offset_right = 398.0
-offset_bottom = 97.0
+offset_left = 180.0
+offset_top = 43.0
+offset_right = 429.0
+offset_bottom = 103.0
 text = "Chesseption - rules:"
 
 [node name="Back_button" type="Button" parent="."]
-offset_left = 378.0
-offset_top = 744.0
-offset_right = 466.0
-offset_bottom = 781.0
+offset_left = 417.0
+offset_top = 1138.0
+offset_right = 505.0
+offset_bottom = 1175.0
 text = "Back"
 
 [connection signal="mouse_entered" from="Back_button" to="." method="_on_back_button_mouse_entered"]

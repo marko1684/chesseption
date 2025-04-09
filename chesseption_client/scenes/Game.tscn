@@ -14,15 +14,17 @@ script = ExtResource("1_78awf")
 
 [node name="Background" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(240.5, 400.5)
-scale = Vector2(0.443519, 0.416146)
+position = Vector2(270.5, 600.5)
+scale = Vector2(0.499074, 0.624479)
 texture = ExtResource("1_ibkli")
 
 [node name="Board" parent="." instance=ExtResource("2_qbsmt")]
-position = Vector2(47, 238)
+position = Vector2(36, 423)
+scale = Vector2(1.2, 1.2)
 
 [node name="Selection_window" parent="." instance=ExtResource("4_s0nni")]
-position = Vector2(5, 625)
+position = Vector2(-13, 942)
+scale = Vector2(1.2, 1.2)
 
 [node name="Pieces" type="Node2D" parent="."]
 
@@ -46,4 +48,4 @@ position = Vector2(-219, 264)
 [node name="ChallangeAPlayerWindow" parent="." instance=ExtResource("8_400sg")]
 visible = false
 z_index = 36
-position = Vector2(2, 631)
+position = Vector2(4, 968)

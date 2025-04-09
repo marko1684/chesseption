@@ -6,47 +6,47 @@
 script = ExtResource("1_6pdmm")
 
 [node name="Back_to_main_menu" type="Button" parent="."]
-offset_left = 374.0
-offset_top = 742.0
-offset_right = 472.0
-offset_bottom = 789.0
+offset_left = 410.0
+offset_top = 1124.0
+offset_right = 508.0
+offset_bottom = 1171.0
 text = "Back"
 
 [node name="Music_slider" type="HSlider" parent="."]
-offset_left = 133.0
-offset_top = 172.0
-offset_right = 341.0
-offset_bottom = 197.0
+offset_left = 157.0
+offset_top = 259.0
+offset_right = 365.0
+offset_bottom = 284.0
 max_value = 10.0
 value = 10.0
 
 [node name="SoundFX_slider" type="HSlider" parent="."]
-offset_left = 136.0
-offset_top = 264.0
-offset_right = 344.0
-offset_bottom = 289.0
+offset_left = 160.0
+offset_top = 351.0
+offset_right = 368.0
+offset_bottom = 376.0
 max_value = 10.0
 value = 10.0
 
 [node name="Music_label" type="Label" parent="."]
-offset_left = 138.0
-offset_top = 132.0
-offset_right = 318.0
-offset_bottom = 165.0
+offset_left = 162.0
+offset_top = 219.0
+offset_right = 342.0
+offset_bottom = 252.0
 text = "Music volume:"
 
 [node name="SoundFX_label" type="Label" parent="."]
-offset_left = 137.0
-offset_top = 217.0
-offset_right = 317.0
-offset_bottom = 250.0
+offset_left = 161.0
+offset_top = 304.0
+offset_right = 341.0
+offset_bottom = 337.0
 text = "Sound FX:"
 
 [node name="Rules" type="Button" parent="."]
-offset_left = 156.0
-offset_top = 458.0
-offset_right = 336.0
-offset_bottom = 514.0
+offset_left = 180.0
+offset_top = 545.0
+offset_right = 360.0
+offset_bottom = 601.0
 text = "Rules"
 
 [connection signal="mouse_entered" from="Back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_entered"]

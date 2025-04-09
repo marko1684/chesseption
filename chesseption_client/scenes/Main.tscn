@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://lpq42cincwa4"]
+[gd_scene load_steps=9 format=3 uid="uid://lpq42cincwa4"]
 
 [ext_resource type="Script" uid="uid://nuq08iqevd0d" path="res://scripts/Main.gd" id="1_rarhs"]
 [ext_resource type="PackedScene" uid="uid://uduuggs45ldx" path="res://scenes/main_menu.tscn" id="2_vcsgt"]
@@ -7,11 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://5arrwic0hntk" path="res://scenes/JoinGameScreen.tscn" id="4_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dmi5kyshq6kw2" path="res://scenes/OptionsScreen.tscn" id="5_c01mt"]
 [ext_resource type="PackedScene" uid="uid://b6alnkqic0mgk" path="res://scenes/rules_screen.tscn" id="7_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://dx8e53ul241nt" path="res://scenes/login.tscn" id="8_jlsqs"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rarhs")
 
 [node name="Main_menu" parent="." instance=ExtResource("2_vcsgt")]
+visible = false
 
 [node name="JoinGameScreen" parent="." instance=ExtResource("4_vcsgt")]
 visible = false
@@ -31,3 +33,5 @@ visible = false
 [node name="Music_player" type="AudioStreamPlayer2D" parent="."]
 
 [node name="SoundFX_player" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Login" parent="." instance=ExtResource("8_jlsqs")]

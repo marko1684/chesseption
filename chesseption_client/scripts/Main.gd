@@ -9,7 +9,7 @@ class_name Main extends Node2D
 @onready var rules_screen = $Rules
 @onready var music_player = $Music_player
 @onready var soundFX_player = $SoundFX_player
-
+@onready var login_screen = $Login
 
 func _ready() -> void:
 	main_menu.connect("play_button_pressed", Callable(self, "_on_play_button_pressed"))
@@ -21,14 +21,23 @@ func _ready() -> void:
 	join_game_screen.connect("join_4_player_game", Callable(self, "_on_join_4_player_game"))
 	join_game_screen.connect("create_custom_game", Callable(self, "_on_create_custom_game"))
 	profile_screen.connect("back_to_main_menu_button_pressed", Callable(self, "_on_exit_profile_view"))
+	profile_screen.connect("log_out_pressed", Callable(self, "_on_log_out_pressed"))
 	options_screen.connect("back_to_main_menu_button_pressed", Callable(self, "_on_exit_options_view"))
 	options_screen.connect("rules_button_pressed", Callable(self, "_on_rules_button_pressed"))
 	options_screen.connect("music_volume_changed", Callable(self, "_on_music_volume_changed"))
 	options_screen.connect("soundFX_volume_changed", Callable(self, "_on_soundFX_volume_changed"))
 	rules_screen.connect("back_to_options_screen", Callable(self, "_on_back_to_options_screen"))
-
+	login_screen.connect("login_pressed", Callable(self, "_on_login_pressed"))
 	play_song("res://audio/doodle_song.mp3")
+	
 
+func _on_log_out_pressed() -> void:
+	profile_screen.hide()
+	login_screen.show()
+	
+func _on_login_pressed() -> void:
+	login_screen.hide()
+	main_menu.show()
 	
 func _on_music_volume_changed(value: int) -> void:
 	var min_db = -50

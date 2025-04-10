@@ -30,7 +30,7 @@ func _ready() -> void:
 	login_screen.connect("login_pressed", Callable(self, "_on_login_pressed"))
 	play_song("res://audio/doodle_song.mp3")
 	
-
+	print(GameState.game_id)
 func _on_log_out_pressed() -> void:
 	profile_screen.hide()
 	login_screen.show()

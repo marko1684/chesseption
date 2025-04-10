@@ -8,13 +8,6 @@
 [node name="ProfileScreen" type="Node2D"]
 script = ExtResource("1_0pa4v")
 
-[node name="Back_to_main_menu" type="Button" parent="."]
-offset_left = 409.0
-offset_top = 1110.0
-offset_right = 507.0
-offset_bottom = 1157.0
-text = "Back"
-
 [node name="Player_icon" type="Sprite2D" parent="."]
 position = Vector2(266, 126.31)
 scale = Vector2(0.303472, 0.342625)
@@ -52,9 +45,16 @@ offset_left = 205.0
 offset_top = 967.0
 offset_right = 362.0
 offset_bottom = 1014.0
-text = "Log out button"
+text = "Log out "
 
+[node name="Back_to_main_menu" type="Button" parent="."]
+offset_left = 409.0
+offset_top = 1110.0
+offset_right = 507.0
+offset_bottom = 1157.0
+text = "Back"
+
+[connection signal="pressed" from="Log_out_button" to="." method="_on_log_out_button_pressed"]
 [connection signal="mouse_entered" from="Back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_entered"]
 [connection signal="mouse_exited" from="Back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_exited"]
 [connection signal="pressed" from="Back_to_main_menu" to="." method="_on_back_to_main_menu_pressed"]
-[connection signal="pressed" from="Log_out_button" to="." method="_on_log_out_button_pressed"]

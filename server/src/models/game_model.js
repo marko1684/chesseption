@@ -1,6 +1,7 @@
 const Game = require('../config/db');
+const { v4: uuidv4 } = require('uuid');
 
-const starting_positions = ['a4k', 'd8k', 'e1k', 'h5k'];
+const starting_positions = ['a4k', 'h5k', 'e1k', 'd8k'];
 
 const possible_positions = [
     'a1',
@@ -80,30 +81,40 @@ const game_model = {
     },
 
     async create_game(lobby) {
+        const player_positions = new Map();
+        lobby.players.forEach((player, index) => {
+            player_positions.set(player.player_id, {
+                position: starting_positions[index],
+                points: 0,
+            });
+        });
         const new_game = new Game({
-            game_id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
+            game_id: uuidv4(),
             players: lobby.players,
             board_state: {
                 player_positions,
                 diamond_position: possible_positions[Math.floor(Math.random() * possible_positions.length)],
             },
-
+            accepted: lobby.players.map(() => ({ accept: 0 })),
             last_move: null,
             status: 'in_progress',
         });
 
-        await newGame.save();
+        await new_game.save();
     },
 
-    async make_move(game_id) {
+    async make_move(game_id, player_id, lied, new_board_state) {
         const current_game = await Game.findById(game_id);
         if (!current_game) {
             throw new Error('Game not found');
         }
         current_game.last_move.board_state = current_game.board_state;
         current_game.board_state = new_board_state;
-        current_game.last_move.player_id = move.player_id;
-        current_game.last_move.lied = move.lied;
+        current_game.last_move.player_id = player_id;
+        current_game.last_move.lied = lied;
+        const playerIndex = current_game.players.findIndex((p) => p.player_id === player_id);
+        if (playerIndex === -1) throw new Error('Player not found in game');
+        current_game.accepted[playerIndex].accept = 1;
         await current_game.save();
         return current_game;
     },
@@ -153,10 +164,9 @@ const game_model = {
             throw new Error('Game not found');
         }
 
-        const index = players.findIndex((player) => player.player_id === player_id);
-        current_game.accepted[playerIndex].accept = 1;
-
-        const allAccepted = accepted.every((entry) => entry.accept === 1);
+        const index = current_game.players.findIndex((player) => player.player_id === player_id);
+        current_game.accepted[index].accept = 1;
+        const allAccepted = current_game.accepted.every((entry) => entry.accept === 1);
         if (allAccepted === true) {
             current_game.accepted = current_game.accepted.map(() => ({
                 accept: 0,
@@ -166,3 +176,5 @@ const game_model = {
         return current_game;
     },
 };
+
+module.exports = game_model;

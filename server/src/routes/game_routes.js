@@ -12,6 +12,6 @@ router.post('/accept_move', game_controller.accept_move);
 
 // I guess we will need it
 router.get('state/:gameId', game_controller.get_game_state);
-router.post('/finish', game_controller.finish_game);
+router.post('/finish_game', game_controller.finish_game);
 
 module.exports = router;

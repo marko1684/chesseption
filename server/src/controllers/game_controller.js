@@ -5,11 +5,7 @@ const gameController = {
     async create_game(req, res) {
         try {
             const { game_id, players, board_state } = req.body;
-            const game = await game_model.create_game(
-                game_id,
-                players,
-                board_state
-            );
+            const game = await game_model.create_game(game_id, players, board_state);
             res.status(201).json(game);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -18,12 +14,8 @@ const gameController = {
 
     async make_move(req, res) {
         try {
-            const { game_id, move, new_board_state } = req.body;
-            const updated_game = await game_model.make_move(
-                game_id,
-                move,
-                new_board_state
-            );
+            const { game_id, player_id, lied, new_board_state } = req.body;
+            const updated_game = await game_model.make_move(game_id, player_id, lied, new_board_state);
             res.json(updated_game);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -52,14 +44,10 @@ const gameController = {
             res.status(500).json({ error: error.message });
         }
     },
-    async challange_move(req, res) {
+    async challenge_move(req, res) {
         try {
             const { game_id, player1_id, player2_id } = req.body;
-            const updated_game = await game_model.challange_move(
-                game_id,
-                player1_id,
-                player2_id
-            );
+            const updated_game = await game_model.challenge_move(game_id, player1_id, player2_id);
             res.json(updated_game);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -68,21 +56,18 @@ const gameController = {
     async accept_move(req, res) {
         try {
             const { game_id, player_id } = req.body;
-            const updated_game = await game_model.accept_move(
-                game_id,
-                player_id
-            );
+            const updated_game = await game_model.accept_move(game_id, player_id);
             res.json(updated_game);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     },
 
-    async join_lobby(player_id, game_type) {
+    async join_lobby(req, res) {
         try {
             const { player_id, game_type } = req.body;
-            const game_id = await lobby_model.join_lobby(game_id, player_id);
-            res.json(game_id);
+            const lobby = await lobby_model.join_lobby(player_id, game_type);
+            res.json(lobby);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

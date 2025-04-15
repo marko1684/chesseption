@@ -38,7 +38,9 @@ func _on_login_pressed(username_from_textbox: String) -> void:
 	login_screen.hide()
 	main_menu.show()
 	GameState.your_username = username_from_textbox
-
+	login_player()
+	
+	
 func _on_music_volume_changed(value: int) -> void:
 	var min_db = -50
 	var max_db = 0
@@ -121,3 +123,23 @@ func play_song(path_to_song: String):
 
 func pause_song():
 	music_player.stop()
+
+func login_player() -> void:
+	var data = {
+		"uid": GameState.your_username,
+		"display_name": GameState.your_username,
+		"photo_url": "res://sprites/animation/dijamant/diamond_1.png"
+	}
+	var json_data = JSON.stringify(data)
+	var headers = ["Content-Type: application/json"]
+	
+	$HTTPRequest.request(
+		GameState.server_address + "/player/login",
+		headers,
+		HTTPClient.METHOD_POST,
+		json_data
+	)
+	
+func _on_http_request_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response = body.get_string_from_utf8()
+	print("Server kaze: ", response)

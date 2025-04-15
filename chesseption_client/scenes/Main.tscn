@@ -35,3 +35,7 @@ visible = false
 [node name="SoundFX_player" type="AudioStreamPlayer2D" parent="."]
 
 [node name="Login" parent="." instance=ExtResource("8_jlsqs")]
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

@@ -12,4 +12,11 @@ offset_right = 363.0
 offset_bottom = 679.0
 text = "login via google"
 
+[node name="TextEdit" type="TextEdit" parent="."]
+offset_left = 118.0
+offset_top = 347.0
+offset_right = 449.0
+offset_bottom = 442.0
+text = "username"
+
 [connection signal="pressed" from="google_login_button" to="." method="_on_google_login_button_pressed"]

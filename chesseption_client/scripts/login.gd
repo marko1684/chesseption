@@ -1,28 +1,17 @@
 class_name login extends Node2D
 
-signal login_pressed()
+signal login_pressed(username: String)
+@onready var username_textbox = $TextEdit
 
 func _ready():
 	Firebase.Auth.login_succeeded.connect(on_login_succeeded)
 	Firebase.Auth.signup_succeeded.connect(on_signup_succeeded)
 	Firebase.Auth.login_failed.connect(on_login_failed)
 	Firebase.Auth.signup_failed.connect(on_signup_failed)
-	
-	if Firebase.Auth.check_auth_file():
-		%StateLabel.text = "Logged in"
-		get_tree().change_scene_to_file("res://Game.tscn")
-	elif OS.get_name() == "Web":
-		var provider: AuthProvider = Firebase.Auth.get_GoogleProvider()
-		Firebase.Auth.set_redirect_uri("http://localhost:8060/index.html")
-		var token = Firebase.Auth.get_token_from_url(provider)
-		if token:
-			Firebase.Auth.login_with_oauth(token, provider)
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
 
 func _on_login_button_pressed():
 	var email = %EmailLineEdit.text
@@ -72,4 +61,16 @@ func _on_sign_in_google_button_pressed():
 		
 
 func _on_google_login_button_pressed() -> void:
-	emit_signal("login_pressed")
+	var provider: AuthProvider = Firebase.Auth.get_GoogleProvider()
+	var platform := OS.get_name()
+
+	if platform == "Web":
+		Firebase.Auth.set_redirect_uri("http://localhost:8060/index.html")
+		Firebase.Auth.get_auth_with_redirect(provider)
+	elif platform == "Android":
+		Firebase.Auth.get_auth_with_provider(provider)
+	else:
+		Firebase.Auth.get_auth_localhost(provider, 8060)
+	
+	var username  = username_textbox.text
+	emit_signal("login_pressed", username)

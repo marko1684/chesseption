@@ -30,15 +30,15 @@ func _ready() -> void:
 	login_screen.connect("login_pressed", Callable(self, "_on_login_pressed"))
 	play_song("res://audio/doodle_song.mp3")
 	
-	print(GameState.game_id)
 func _on_log_out_pressed() -> void:
 	profile_screen.hide()
 	login_screen.show()
 	
-func _on_login_pressed() -> void:
+func _on_login_pressed(username_from_textbox: String) -> void:
 	login_screen.hide()
 	main_menu.show()
-	
+	GameState.your_username = username_from_textbox
+
 func _on_music_volume_changed(value: int) -> void:
 	var min_db = -50
 	var max_db = 0

@@ -502,6 +502,7 @@ func check_auth_file() -> bool:
 		# Will ensure "auth_request" emitted
 		return load_auth()
 	else:
+		print('ovde je greska')
 		Firebase._printerr("Encrypted Firebase Auth file does not exist")
 		auth_request.emit(ERR_DOES_NOT_EXIST, "Encrypted Firebase Auth file does not exist")
 		return false

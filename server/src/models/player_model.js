@@ -11,9 +11,9 @@ const player_model = {
         if (!player) {
             player = await Player.create({
                 uid,
-                displayName,
+                display_name,
                 email,
-                photoURL,
+                photo_URL,
             });
         }
 

@@ -36,6 +36,12 @@ visible = false
 
 [node name="Login" parent="." instance=ExtResource("8_jlsqs")]
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+[node name="HTTPRequest_login" type="HTTPRequest" parent="."]
 
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
+[node name="HTTPRequest_join_game" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_get_game_state" type="HTTPRequest" parent="."]
+
+[connection signal="request_completed" from="HTTPRequest_login" to="." method="_on_http_request_login_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_join_game" to="." method="_on_http_request_join_game_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_get_game_state" to="." method="_on_http_request_get_game_state_request_completed"]

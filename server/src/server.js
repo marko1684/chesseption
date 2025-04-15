@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/game', game_routes);
-// app.use('/player', player_routes);
+app.use('/player', player_routes);
 
 const PORT = process.env.PORT || 3000;
 

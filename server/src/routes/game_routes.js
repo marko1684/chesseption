@@ -14,4 +14,6 @@ router.post('/accept_move', game_controller.accept_move);
 router.get('state/:gameId', game_controller.get_game_state);
 router.post('/finish_game', game_controller.finish_game);
 
+// router.post('/login', player_controller.login);
+
 module.exports = router;

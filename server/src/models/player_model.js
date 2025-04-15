@@ -1,4 +1,4 @@
-const player = require('../config/player.js');
+const Player = require('../config/player.js');
 
 const player_model = {
     async login(uid, displayName, email, photoURL) {

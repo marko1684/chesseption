@@ -89,8 +89,9 @@ const game_model = {
             });
         });
         const new_game = new Game({
-            game_id: uuidv4(),
+            game_id: lobby._id,
             players: lobby.players,
+            player_id: '123',
             board_state: {
                 player_positions,
                 diamond_position: possible_positions[Math.floor(Math.random() * possible_positions.length)],
@@ -104,7 +105,7 @@ const game_model = {
     },
 
     async make_move(game_id, player_id, lied, new_board_state) {
-        const current_game = await Game.findById(game_id);
+        const current_game = await Game.findOne({ game_id: game_id });
         if (!current_game) {
             throw new Error('Game not found');
         }
@@ -120,15 +121,15 @@ const game_model = {
     },
 
     async get_current_state(game_id) {
-        let current_game = await Game.findById(game_id);
+        let current_game = await Game.findOne({ game_id: game_id });
         if (!current_game) {
-            throw new Error('Game not found');
+            return -1;
         }
         return current_game;
     },
 
     async finish_game(game_id) {
-        let current_game = await Game.findById(game_id);
+        let current_game = await Game.findOne({ game_id: game_id });
         if (!current_game) {
             throw new Error('Game not found');
         }
@@ -138,7 +139,7 @@ const game_model = {
     },
 
     async challenge_move(game_id, player1_id, player2_id) {
-        let current_game = await Game.findById(game_id);
+        let current_game = await Game.findOne({ game_id: game_id });
         if (!current_game) {
             throw new Error('Game not found');
         }
@@ -155,11 +156,14 @@ const game_model = {
             current_game.board_state.player_positions.get(player1_id).points -= 1;
         }
 
+        current_game.accepted = current_game.players.map(() => ({ accept: 0 }));
+
         await current_game.save();
+        return current_game;
     },
 
     async accept_move(game_id, player_id) {
-        const current_game = await Game.findById(game_id);
+        const current_game = await Game.findOne({ game_id: game_id });
         if (!current_game) {
             throw new Error('Game not found');
         }

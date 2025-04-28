@@ -1,7 +1,7 @@
 const Player = require('../config/player.js');
 
 const player_model = {
-    async login(uid, displayName, email, photoURL) {
+    async login(uid, display_name, email, photo_URL) {
         if (!uid) {
             throw new Error('UID is required for login');
         }
@@ -16,6 +16,7 @@ const player_model = {
                 photo_URL,
             });
         }
+        player = await Player.findOne({ uid });
 
         return player;
     },

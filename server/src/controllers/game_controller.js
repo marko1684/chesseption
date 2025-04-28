@@ -24,11 +24,12 @@ const gameController = {
 
     async get_game_state(req, res) {
         try {
-            const { gameId } = req.params;
-            const game = await game_model.get_current_state(gameId);
-            if (!game) {
-                return res.status(404).json({ error: 'Game not found' });
-            }
+            const { game_id } = req.params;
+            console.log('Game ID:', game_id);
+            const game = await game_model.get_current_state(game_id);
+            // if (!game) {
+            //     return res.status(404).json({ error: 'Game not found' });
+            // }
             res.json(game);
         } catch (error) {
             res.status(500).json({ error: error.message });

@@ -81,19 +81,22 @@ func _on_join_2_player_game() -> void:
 	join_game_screen.hide()
 	pause_song()
 	play_song("res://audio/doodle_lobby_song.mp3")
+	join_game(2)
 	
 func _on_join_3_player_game() -> void:
 	game_screen.show()
 	join_game_screen.hide()
 	pause_song()
 	play_song("res://audio/doodle_lobby_song.mp3")
-	
+	join_game(3)
+
 func _on_join_4_player_game() -> void:
 	game_screen.show()
 	join_game_screen.hide()
 	pause_song()
 	play_song("res://audio/doodle_lobby_song.mp3")
-	
+	join_game(4)
+
 func _on_create_custom_game() -> void:
 	game_screen.show()
 	join_game_screen.hide()
@@ -133,13 +136,63 @@ func login_player() -> void:
 	var json_data = JSON.stringify(data)
 	var headers = ["Content-Type: application/json"]
 	
-	$HTTPRequest.request(
+	$HTTPRequest_login.request(
 		GameState.server_address + "/player/login",
 		headers,
 		HTTPClient.METHOD_POST,
 		json_data
 	)
-	
-func _on_http_request_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+
+func _on_http_request_login_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	print("Server kaze: ", response)
+
+func join_game(game_type: int) -> void:
+	var data = {
+		"player_id": GameState.your_username,
+		"game_type": game_type
+	}
+	var json_data = JSON.stringify(data)
+	var headers = ["Content-Type: application/json"]
+	
+	$HTTPRequest_join_game.request(
+		GameState.server_address + "/game/join_lobby",
+		headers,
+		HTTPClient.METHOD_POST,
+		json_data
+	)
+
+func _on_http_request_join_game_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response = body.get_string_from_utf8()
+	print("Server kaže: ", response)
+
+	var json = JSON.new()
+	var error = json.parse(response)
+
+	if error == OK:
+		var data = json.get_data()
+		var game_id = data["_id"]
+		GameState.lobby_id = game_id
+		print("Game ID: ", GameState.lobby_id)
+	else:
+		print("Greška pri parsiranju JSON-a: ", error)
+	get_game_state()
+	
+func get_game_state() -> void:
+	var headers = ["Content-Type: application/json"]
+	
+	$HTTPRequest_get_game_state.request(
+		GameState.server_address + "/game/state/" + GameState.lobby_id,
+		headers,
+		HTTPClient.METHOD_GET,
+	)
+
+
+func _on_http_request_get_game_state_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response = body.get_string_from_utf8()
+	if response == "-1":
+		await get_tree().create_timer(1).timeout
+		get_game_state()
+		print("-1")
+	else:
+		print(response)

@@ -28,7 +28,7 @@ func _ready() -> void:
 	options_screen.connect("soundFX_volume_changed", Callable(self, "_on_soundFX_volume_changed"))
 	rules_screen.connect("back_to_options_screen", Callable(self, "_on_back_to_options_screen"))
 	login_screen.connect("login_pressed", Callable(self, "_on_login_pressed"))
-	play_song("res://audio/doodle_song.mp3")
+	#play_song("res://audio/doodle_song.mp3")
 	
 func _on_log_out_pressed() -> void:
 	profile_screen.hide()
@@ -77,25 +77,16 @@ func _on_exit_options_view() -> void:
 	main_menu.show()
 	
 func _on_join_2_player_game() -> void:
-	game_screen.show()
-	join_game_screen.hide()
-	pause_song()
-	play_song("res://audio/doodle_lobby_song.mp3")
-	join_game(2)
-	
+	join_game_screen.waiting_for_players_label.show()
+	join_lobby(2)
+
 func _on_join_3_player_game() -> void:
-	game_screen.show()
-	join_game_screen.hide()
-	pause_song()
-	play_song("res://audio/doodle_lobby_song.mp3")
-	join_game(3)
+	join_game_screen.waiting_for_players_label.show()
+	join_lobby(3)
 
 func _on_join_4_player_game() -> void:
-	game_screen.show()
-	join_game_screen.hide()
-	pause_song()
-	play_song("res://audio/doodle_lobby_song.mp3")
-	join_game(4)
+	join_game_screen.waiting_for_players_label.show()
+	join_lobby(4)
 
 func _on_create_custom_game() -> void:
 	game_screen.show()
@@ -147,7 +138,8 @@ func _on_http_request_login_request_completed(result: int, response_code: int, h
 	var response = body.get_string_from_utf8()
 	print("Server kaze: ", response)
 
-func join_game(game_type: int) -> void:
+func join_lobby(game_type: int) -> void:
+	GameState.game_type = game_type
 	var data = {
 		"player_id": GameState.your_username,
 		"game_type": game_type
@@ -184,7 +176,7 @@ func get_game_state() -> void:
 	$HTTPRequest_get_game_state.request(
 		GameState.server_address + "/game/state/" + GameState.lobby_id,
 		headers,
-		HTTPClient.METHOD_GET,
+		HTTPClient.METHOD_GET
 	)
 
 
@@ -196,3 +188,13 @@ func _on_http_request_get_game_state_request_completed(result: int, response_cod
 		print("-1")
 	else:
 		print(response)
+		game_screen.save_response_data_in_game_state(body)
+		join_game()
+
+
+func join_game() -> void:
+		game_screen.setup_game()
+		game_screen.show()
+		join_game_screen.hide()
+		pause_song()
+		#play_song("res://audio/doodle_lobby_song.mp3")

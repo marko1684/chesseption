@@ -6,6 +6,8 @@ class_name Join_game_screen extends Node2D
 @onready var create_custom_game_button = $CreateCustomGame
 @onready var back_to_main_menu_button = $back_to_main_menu
 
+@onready var waiting_for_players_label = $Waiting_for_players_label
+
 signal join_2_player_game()
 signal join_3_player_game()
 signal join_4_player_game()

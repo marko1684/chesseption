@@ -41,6 +41,15 @@ offset_bottom = 1155.0
 text = "Back
 "
 
+[node name="Waiting_for_players_label" type="Label" parent="."]
+visible = false
+offset_left = 38.0
+offset_top = 91.0
+offset_right = 197.0
+offset_bottom = 134.0
+scale = Vector2(3, 3)
+text = "Waiting for players..."
+
 [connection signal="mouse_entered" from="JoinTwoPlayerGame" to="." method="_on_join_two_player_game_mouse_entered"]
 [connection signal="mouse_exited" from="JoinTwoPlayerGame" to="." method="_on_join_two_player_game_mouse_exited"]
 [connection signal="pressed" from="JoinTwoPlayerGame" to="." method="_on_join_two_player_game_pressed"]

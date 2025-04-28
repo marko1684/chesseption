@@ -23,6 +23,7 @@ position = Vector2(36, 423)
 scale = Vector2(1.2, 1.2)
 
 [node name="Selection_window" parent="." instance=ExtResource("4_s0nni")]
+visible = false
 position = Vector2(-13, 942)
 scale = Vector2(1.2, 1.2)
 
@@ -49,3 +50,16 @@ position = Vector2(-219, 264)
 visible = false
 z_index = 36
 position = Vector2(4, 968)
+
+[node name="HTTPRequest_make_move" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_get_game_state" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_move_challanged" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_move_accepted" type="HTTPRequest" parent="."]
+
+[connection signal="request_completed" from="HTTPRequest_make_move" to="." method="_on_http_request_make_move_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_get_game_state" to="." method="_on_http_request_get_game_state_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_move_challanged" to="." method="_on_http_request_move_challanged_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_move_accepted" to="." method="_on_http_request_move_accepted_request_completed"]

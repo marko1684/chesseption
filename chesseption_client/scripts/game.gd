@@ -14,6 +14,7 @@ class_name Game extends Node2D
 @onready var box: Array = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] #This is temporary, real box will be assigned by the server
 
 var you_clicked_challange_or_accept_button = false
+var your_index = -1
 var your_color = ""
 var your_piece = ""
 var your_king = null #the piece you will be controling
@@ -100,12 +101,13 @@ func _on_http_request_move_accepted_request_completed(result: int, response_code
 		print(response)
 		save_response_data_in_game_state(body)
 		determine_your_state()
+	print('\nAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAA\n')
 
 
 
 func update_board() -> void:
-	print('DSAIHFGKDSHGHFKLDSHHGFASKHAS')
 	board.free_all_occupied_tiles()
+	board.diamond_position = board.find_tile_by_name(GameState.diamond_position)
 	update_white_piece_figure_and_position()
 	update_black_piece_figure_and_position()
 	if GameState.game_type == 3:
@@ -113,7 +115,6 @@ func update_board() -> void:
 	elif GameState.game_type == 4:
 		update_red_piece_figure_and_position()
 		update_blue_piece_figure_and_position()
-	board.diamond_position = board.find_tile_by_name(GameState.diamond_position)
 	draw_board()
 	
 
@@ -146,6 +147,7 @@ func get_random_piece_from_the_box(box) -> String:
 	
 
 func _on_piece_moved(new_tile_name: String) -> void:
+	selection_window.hide()
 	puff.position = board.tiles.get_node(NodePath(your_king_position)).global_position
 	puff.animation.play("puff_animation")
 	
@@ -209,11 +211,13 @@ func place_diamond_to_a_random_tile() -> void:
 			if i == random_tile_number:
 				board.diamond_position = tile
 				diamond.position = board.diamond_position.global_position
+				GameState.diamond_position = board.diamond_position.name
 			i += 1
 			
 func draw_your_selection_window() -> void:
 	selection_window.set_your_color(your_color)
-	selection_window.connect("piece_chosen", Callable(self, "_on_piece_chosen"))
+	if not selection_window.is_connected("piece_chosen", Callable(self, "_on_piece_chosen")):
+		selection_window.connect("piece_chosen", Callable(self, "_on_piece_chosen"))
 	selection_window.show()
 	
 func _on_piece_chosen(piece_name: String) -> void:
@@ -226,25 +230,28 @@ func _on_piece_chosen(piece_name: String) -> void:
 func set_your_king() -> void:
 	your_piece = "king"
 	if GameState.all_players_names[0] == GameState.your_username:
+		your_index = 0
 		your_color = "white"
 		your_king = white_piece
 		your_king_position = board.white_piece_position.name
 	elif GameState.all_players_names[1] == GameState.your_username:
+		your_index = 1
 		your_color = "black"
 		your_king = black_piece
 		your_king_position = board.black_piece_position.name
 	elif GameState.game_type == 3 and GameState.all_players_names[2] == GameState.your_username:
+		your_index = 2
 		your_color = "red"
 		your_king = red_piece
 		your_king_position = board.red_piece_position.name
 	elif GameState.game_type == 4 and GameState.all_players_names[3] == GameState.your_username:
+		your_index = 3
 		your_color = "blue"
 		your_king = blue_piece
 		your_king_position = board.blue_piece_position.name
 		
 func draw_board() -> void:
 	if GameState.game_type == 2:
-		print("BELIIII:    " + board.white_piece_position.name)
 		white_piece.position = board.white_piece_position.global_position + Vector2(0, -10)
 		board.white_piece_position.tile_is_occupied = true
 		black_piece.position = board.black_piece_position.global_position + Vector2(0, -10)
@@ -650,8 +657,7 @@ func update_gamestate() -> void:
 	else:
 		GameState.lied = true
 	
-	GameState.last_player = GameState.your_username
-	
+
 func update_white_piece_figure_and_position() -> void:
 		var full_str = GameState.pieces_positions[0]
 		var white_piece_position = full_str.substr(0, full_str.length() - 1)
@@ -723,7 +729,6 @@ func update_blue_piece_figure_and_position() -> void:
 
 func make_move() -> void:
 	var data
-	print("\n" + str(GameState.game_type) + "\n")
 	if GameState.game_type == 2:
 		data = {
 				"game_id": GameState.lobby_id,
@@ -802,7 +807,6 @@ func make_move() -> void:
 		HTTPClient.METHOD_POST,
 		json_data
 	)
-	get_game_state()
 	
 func _on_http_request_make_move_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
@@ -843,8 +847,13 @@ func save_response_data_in_game_state(body: PackedByteArray) -> void:
 		var data = json.get_data()
 		var players = data["players"]
 		var board_state = data["board_state"]
-		var last_player = data["player_id"]
 		var player_positions = board_state["player_positions"]
+		
+		GameState.turn_player = data["next_player"]
+		if data["player_id"] == '123':
+			GameState.last_player = GameState.turn_player
+		else:
+			GameState.last_player = data["player_id"]
 		
 		GameState.accepted_array = data["accepted"]
 		GameState.all_players_names = []
@@ -859,62 +868,36 @@ func save_response_data_in_game_state(body: PackedByteArray) -> void:
 					var pos_data = player_positions[player_name]
 					if "position" in pos_data:
 						GameState.pieces_positions.append(pos_data["position"])
-						print(GameState.pieces_positions[0])
 					if "points" in pos_data:
 						GameState.points.append(pos_data["points"])
 
 		if "diamond_position" in board_state:
 			GameState.diamond_position = board_state["diamond_position"]
 
-		if GameState.all_players_names.size() > 0:
-			GameState.last_player = last_player
-			calculate_turn_player(last_player)
-
-func calculate_turn_player(player_name: String) -> void:
-	if GameState.turn_player == "":
-		GameState.turn_player = GameState.all_players_names[0]
-	if GameState.game_type == 2:
-		if player_name == GameState.all_players_names[0]:
-			GameState.turn_player = GameState.all_players_names[1]
-		else:
-			GameState.turn_player = GameState.all_players_names[0]
-	if GameState.game_type == 3:
-		if player_name == GameState.all_players_names[0]:
-			GameState.turn_player = GameState.all_players_names[1]
-		elif player_name == GameState.all_players_names[1]:
-			GameState.turn_player = GameState.all_players_names[2]
-		else:
-			GameState.turn_player = GameState.all_players_names[0]
-	if GameState.game_type == 4:
-		if player_name == GameState.all_players_names[0]:
-			GameState.turn_player = GameState.all_players_names[1]
-		elif player_name == GameState.all_players_names[1]:
-			GameState.turn_player = GameState.all_players_names[2]
-		elif player_name == GameState.all_players_names[2]:
-			GameState.turn_player = GameState.all_players_names[3]
-		else:
-			GameState.turn_player = GameState.all_players_names[0]
-
 func determine_your_state() -> void:
-	update_board()
+	print("Last player: " + GameState.last_player)
+	print("Turn player: " + GameState.turn_player)
 	var your_state = ""
+	
 	for number in GameState.accepted_array:
 		if number["accept"] == 1:
 			your_state = "challange"
 			break
-	
+
 	if your_state == "challange":
 		if GameState.last_player != GameState.your_username:
 			challange_last_move()
-	else:
+		else:
+			your_state = ""
+	if your_state != "challange":
+		you_clicked_challange_or_accept_button = false
 		if GameState.turn_player == GameState.your_username:
 			your_turn()
-			you_clicked_challange_or_accept_button = false
 		else:
 			wait_for_other_players()
-			you_clicked_challange_or_accept_button = false
 
-
+	update_board()
+	
 func wait_for_other_players() -> void:
 	get_game_state()
 	

@@ -92,6 +92,7 @@ const game_model = {
             game_id: lobby._id,
             players: lobby.players,
             player_id: '123',
+            next_player: lobby.players[0]['player_id'],
             board_state: {
                 player_positions,
                 diamond_position: possible_positions[Math.floor(Math.random() * possible_positions.length)],
@@ -111,11 +112,13 @@ const game_model = {
         }
         current_game.last_move.board_state = current_game.board_state;
         current_game.board_state = new_board_state;
-        current_game.last_move.player_id = player_id;
+        current_game.player_id = player_id;
         current_game.last_move.lied = lied;
+
         const playerIndex = current_game.players.findIndex((p) => p.player_id === player_id);
         if (playerIndex === -1) throw new Error('Player not found in game');
         current_game.accepted[playerIndex].accept = 1;
+        current_game.next_player = current_game.players[(playerIndex + 1) % current_game.players.length]['player_id'];
         await current_game.save();
         return current_game;
     },

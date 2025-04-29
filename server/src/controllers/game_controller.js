@@ -16,9 +16,13 @@ const gameController = {
         try {
             const { game_id, player_id, lied, new_board_state } = req.body;
             const updated_game = await game_model.make_move(game_id, player_id, lied, new_board_state);
-            console.log(req.body);
-            console.log('qurac');
-            console.log(updated_game);
+
+            console.log('Request body for making a move:');
+            console.log(JSON.stringify(req.body, null, 2));
+
+            console.log('Updated game after making a move:');
+            console.log(JSON.stringify(updated_game, null, 2));
+
             res.json(updated_game);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -28,7 +32,6 @@ const gameController = {
     async get_game_state(req, res) {
         try {
             const { game_id } = req.params;
-            console.log('Game ID:', game_id);
             const game = await game_model.get_current_state(game_id);
             // if (!game) {
             //     return res.status(404).json({ error: 'Game not found' });
@@ -50,8 +53,16 @@ const gameController = {
     },
     async challenge_move(req, res) {
         try {
+            console.log('############################################');
             const { game_id, player1_id, player2_id } = req.body;
             const updated_game = await game_model.challenge_move(game_id, player1_id, player2_id);
+
+            console.log('Request body for challenging the move:');
+            console.log(JSON.stringify(req.body, null, 2));
+
+            console.log('Updated game after challenging the move:');
+            console.log(JSON.stringify(updated_game, null, 2));
+
             res.json(updated_game);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -61,6 +72,13 @@ const gameController = {
         try {
             const { game_id, player_id } = req.body;
             const updated_game = await game_model.accept_move(game_id, player_id);
+
+            console.log('Request body for accepting the move:');
+            console.log(JSON.stringify(req.body, null, 2));
+
+            console.log('Updated game after accepting the move:');
+            console.log(JSON.stringify(updated_game, null, 2));
+
             res.json(updated_game);
         } catch (error) {
             res.status(500).json({ error: error.message });

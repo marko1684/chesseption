@@ -8,6 +8,10 @@ const gameSchema = new mongoose.Schema({
     lied: Boolean,
     next_player: String,
     accepted: [{ accept: Number }],
+    box: {
+        type: [Number],
+        default: Array(15).fill(1),
+    },
     board_state: {
         player_positions: {
             type: Map,

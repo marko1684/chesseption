@@ -64,7 +64,7 @@ class_name Board extends Node2D
 @onready var h6 = $tiles/h6
 @onready var h7 = $tiles/h7
 @onready var h8 = $tiles/h8
-@onready var removed_pieces = $Removed_pieces
+@onready var removed_pieces: Tile = $Removed_pieces
 
 @onready var white_piece_position: Tile = a4
 @onready var black_piece_position: Tile = h5
@@ -79,6 +79,8 @@ func free_all_occupied_tiles() -> void:
 
 
 func find_tile_by_name(tile_name: String) -> Tile:
+	if tile_name == "xx":
+		return removed_pieces
 	for tile in tiles.get_children():
 		if tile_name == tile.name:
 			return tile

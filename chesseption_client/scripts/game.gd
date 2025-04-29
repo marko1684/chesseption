@@ -45,8 +45,31 @@ func setup_game() -> void:
 	set_your_king()
 	determine_your_state()
 
+func set_your_king() -> void:
+	your_piece = "king"
+	if GameState.all_players_names[0] == GameState.your_username:
+		your_index = 0
+		your_color = "white"
+		your_king = white_piece
+		your_king_position = board.white_piece_position.name
+	elif GameState.all_players_names[1] == GameState.your_username:
+		your_index = 1
+		your_color = "black"
+		your_king = black_piece
+		your_king_position = board.black_piece_position.name
+	elif GameState.game_type == 3 and GameState.all_players_names[2] == GameState.your_username:
+		your_index = 2
+		your_color = "red"
+		your_king = red_piece
+		your_king_position = board.red_piece_position.name
+	elif GameState.game_type == 4 and GameState.all_players_names[3] == GameState.your_username:
+		your_index = 3
+		your_color = "blue"
+		your_king = blue_piece
+		your_king_position = board.blue_piece_position.name
 
 func _on_move_accepted() -> void:
+	you_clicked_challange_or_accept_button = true
 	challange_window.hide()
 	var data = {
 		"game_id": GameState.lobby_id,
@@ -61,8 +84,8 @@ func _on_move_accepted() -> void:
 		HTTPClient.METHOD_POST,
 		json_data
 	)
-	
 func _on_move_challanged() -> void:
+	you_clicked_challange_or_accept_button = true
 	challange_window.hide()
 	var data = {
 		"game_id": GameState.lobby_id,
@@ -73,7 +96,7 @@ func _on_move_challanged() -> void:
 	var headers = ["Content-Type: application/json"]
 	
 	$HTTPRequest_make_move.request(
-		GameState.server_address + "/game/challange_move",
+		GameState.server_address + "/game/challenge_move",
 		headers,
 		HTTPClient.METHOD_POST,
 		json_data
@@ -81,7 +104,6 @@ func _on_move_challanged() -> void:
 	#either calculate new board state based of player lied or diidnt and send it to server, 
 	#or just send it to the server and let it calcualte new board state.
 	#Either way server sends new board state to every player with message playerX challanged playerY and playerY lied/diidnt lie
-
 func _on_http_request_move_challanged_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	if response == "-1":
@@ -91,7 +113,6 @@ func _on_http_request_move_challanged_request_completed(result: int, response_co
 		print(response)
 		save_response_data_in_game_state(body)
 		determine_your_state()
-
 func _on_http_request_move_accepted_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	if response == "-1":
@@ -101,8 +122,6 @@ func _on_http_request_move_accepted_request_completed(result: int, response_code
 		print(response)
 		save_response_data_in_game_state(body)
 		determine_your_state()
-	print('\nAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAA\n')
-
 
 
 func update_board() -> void:
@@ -115,10 +134,18 @@ func update_board() -> void:
 	elif GameState.game_type == 4:
 		update_red_piece_figure_and_position()
 		update_blue_piece_figure_and_position()
+	
+	if your_color == "white":
+		your_king_position = board.white_piece_position.name
+	elif your_color == "black":
+		your_king_position = board.black_piece_position.name
+	elif your_color == "red":
+		your_king_position = board.red_piece_position.name
+	elif your_color == "blue":
+		your_king_position = board.blue_piece_position.name
+		
 	draw_board()
 	
-
-
 func get_random_piece_from_the_box(box) -> String:
 	var available_indexes = []
 	
@@ -144,14 +171,14 @@ func get_random_piece_from_the_box(box) -> String:
 		return "queen"
 	else:
 		return "something went wrong"
-	
 
 func _on_piece_moved(new_tile_name: String) -> void:
 	selection_window.hide()
 	puff.position = board.tiles.get_node(NodePath(your_king_position)).global_position
 	puff.animation.play("puff_animation")
 	
-	board.tiles.get_node(NodePath(your_king_position)).tile_is_occupied = false
+	if board.tiles.has_node(NodePath(your_king_position)):
+		board.tiles.get_node(NodePath(your_king_position)).tile_is_occupied = false
 	your_king_position = new_tile_name
 	await get_tree().create_timer(0.6).timeout
 	your_king.set_piece_sprite(your_piece)
@@ -180,17 +207,25 @@ func remove_piece_from_this_tile(new_tile_name: String) -> void:
 	if board.white_piece_position.name == new_tile_name:
 		board.white_piece_position = board.removed_pieces
 		white_piece.position = board.removed_pieces.global_position 
+		board.white_piece_position = return_random_unoccupied_tile("white")
+		board.white_piece_position.tile_is_occupied = true
 	if board.black_piece_position.name == new_tile_name:
 		board.black_piece_position = board.removed_pieces
 		black_piece.position = board.removed_pieces.global_position 
+		board.black_piece_position = return_random_unoccupied_tile("black")
+		board.black_piece_position.tile_is_occupied = true
 	if board.red_piece_position.name == new_tile_name:
 		board.red_piece_position = board.removed_pieces
 		red_piece.position = board.removed_pieces.global_position 
+		board.red_piece_position = return_random_unoccupied_tile("red")
+		board.red_piece_position.tile_is_occupied = true
 	if board.blue_piece_position.name == new_tile_name:
 		board.blue_piece_position = board.removed_pieces
 		blue_piece.position = board.removed_pieces.global_position 
-
+		board.blue_piece_position = return_random_unoccupied_tile("blue")
+		board.blue_piece_position.tile_is_occupied = true
 	if board.diamond_position.name == new_tile_name:
+		
 		#board.diamond_position = board.removed_pieces
 		#diamond.position = board.removed_pieces.global_position
 		place_diamond_to_a_random_tile()
@@ -226,68 +261,31 @@ func _on_piece_chosen(piece_name: String) -> void:
 
 	your_piece = piece_name
 	highlight_available_tiles()
-	
-func set_your_king() -> void:
-	your_piece = "king"
-	if GameState.all_players_names[0] == GameState.your_username:
-		your_index = 0
-		your_color = "white"
-		your_king = white_piece
-		your_king_position = board.white_piece_position.name
-	elif GameState.all_players_names[1] == GameState.your_username:
-		your_index = 1
-		your_color = "black"
-		your_king = black_piece
-		your_king_position = board.black_piece_position.name
-	elif GameState.game_type == 3 and GameState.all_players_names[2] == GameState.your_username:
-		your_index = 2
-		your_color = "red"
-		your_king = red_piece
-		your_king_position = board.red_piece_position.name
-	elif GameState.game_type == 4 and GameState.all_players_names[3] == GameState.your_username:
-		your_index = 3
-		your_color = "blue"
-		your_king = blue_piece
-		your_king_position = board.blue_piece_position.name
 		
 func draw_board() -> void:
-	if GameState.game_type == 2:
-		white_piece.position = board.white_piece_position.global_position + Vector2(0, -10)
-		board.white_piece_position.tile_is_occupied = true
-		black_piece.position = board.black_piece_position.global_position + Vector2(0, -10)
-		board.black_piece_position.tile_is_occupied = true
-		
-		diamond.position = board.diamond_position.global_position + Vector2(0, 0)
-		board.diamond_position.tile_is_occupied = true
-	elif GameState.game_type == 3:
-		white_piece.position = board.white_piece_position.global_position + Vector2(0, -10)
-		board.white_piece_position.tile_is_occupied = true
-		black_piece.position = board.black_piece_position.global_position + Vector2(0, -10)
-		board.black_piece_position.tile_is_occupied = true
+	white_piece.position = board.white_piece_position.global_position + Vector2(0, -10)
+	board.white_piece_position.tile_is_occupied = true
+	white_piece.set_piece_sprite(white_piece.this_piece)
+	black_piece.position = board.black_piece_position.global_position + Vector2(0, -10)
+	board.black_piece_position.tile_is_occupied = true
+	black_piece.set_piece_sprite(black_piece.this_piece)
+
+	diamond.position = board.diamond_position.global_position + Vector2(0, 0)
+	board.diamond_position.tile_is_occupied = true
+
+	if GameState.game_type == 3 and board.red_piece_position != null:
 		red_piece.position = board.red_piece_position.global_position + Vector2(0, -10)
 		board.red_piece_position.tile_is_occupied = true
-		
-		diamond.position = board.diamond_position.global_position + Vector2(0, 0)
-		board.diamond_position.tile_is_occupied = true
-	elif GameState.game_type == 4:
-		white_piece.position = board.white_piece_position.global_position + Vector2(0, -10)
-		board.white_piece_position.tile_is_occupied = true
-		black_piece.osition = board.black_piece_position.global_position + Vector2(0, -10)
-		board.black_piece_position.tile_is_occupied = true
+		red_piece.set_piece_sprite(red_piece.this_piece)
+
+	elif GameState.game_type == 4 and board.blue_piece_position != null:
 		red_piece.position = board.red_piece_position.global_position + Vector2(0, -10)
 		board.red_piece_position.tile_is_occupied = true
+		red_piece.set_piece_sprite(red_piece.this_piece)
 		blue_piece.position = board.blue_piece_position.global_position + Vector2(0, -10)
 		board.blue_piece_position.tile_is_occupied = true
-	
-		diamond.position = board.diamond_position.global_position + Vector2(0, 0)
-		board.diamond_position.tile_is_occupied = true
-	
-	#red_piece.global_position = board.red_piece_position.global_position + Vector2(0, -10)
-	#board.red_piece_position.tile_is_occupied = true
-	#blue_piece.global_position = board.blue_piece_position.global_position + Vector2(0, -10)
-	#board.blue_piece_position.tile_is_occupied = true
+		blue_piece.set_piece_sprite(blue_piece.this_piece)
 
-	
 func highlight_available_tiles() -> void:
 	var available_tiles_array: Array = []
 	var occupied_but_available_tiles_array: Array = []
@@ -565,7 +563,7 @@ func is_valid(position: Vector2) -> bool:
 func check_if_tile_is_occupied(matrix_representation: Vector2) -> bool:
 	var tile_name = matrix_representation_to_tile_name(matrix_representation)
 	var tile = null
-	if board.has_node(tile_name):
+	if board.tiles.has_node(tile_name):
 		tile = board.tiles.get_node(tile_name)
 	if is_valid(matrix_representation) and tile != null and tile.tile_is_occupied == true:
 		return true
@@ -599,7 +597,7 @@ func update_gamestate() -> void:
 		white_piece_name = "r"
 	elif white_piece.this_piece == "queen":
 		white_piece_name = "q"
-	if board.white_piece_position.name == "removed_pieces":
+	if board.white_piece_position.name == "Removed_pieces":
 		GameState.pieces_positions[0]= "xx" + white_piece_name
 	else:
 		GameState.pieces_positions[0]= board.white_piece_position.name + white_piece_name
@@ -617,7 +615,11 @@ func update_gamestate() -> void:
 		black_piece_name = "r"
 	elif black_piece.this_piece == "queen":
 		black_piece_name = "q"
-	GameState.pieces_positions[1] =  board.black_piece_position.name + black_piece_name
+	if board.black_piece_position.name == "Removed_pieces":
+		GameState.pieces_positions[1]= "xx" + black_piece_name
+	else:
+		GameState.pieces_positions[1]= board.black_piece_position.name + black_piece_name
+
 	
 	if GameState.game_type == 3:
 		var red_piece_name = ""
@@ -633,8 +635,11 @@ func update_gamestate() -> void:
 			red_piece_name = "r"
 		elif red_piece.this_piece == "queen":
 			red_piece_name = "q"
-		GameState.pieces_positions[2] =  board.red_piece_position.name + red_piece_name
-	
+		if board.red_piece_position.name == "Removed_pieces":
+			GameState.pieces_positions[2]= "xx" + red_piece_name
+		else:
+			GameState.pieces_positions[2]= board.red_piece_position.name + red_piece_name
+		
 	if GameState.game_type == 4:
 		var blue_piece_name = ""
 		if blue_piece.this_piece == "king":
@@ -649,8 +654,11 @@ func update_gamestate() -> void:
 			blue_piece_name = "r"
 		elif blue_piece.this_piece == "queen":
 			blue_piece_name = "q"
-		GameState.pieces_positions[3] =  board.blue_piece_position.name + blue_piece_name
-	
+		if board.blue_piece_position.name == "Removed_pieces":
+			GameState.pieces_positions[3]= "xx" + blue_piece_name
+		else:
+			GameState.pieces_positions[3]= board.blue_piece_position.name + blue_piece_name
+		
 	GameState.diamond_position = board.diamond_position.name
 	if your_piece == drawn_piece:
 		GameState.lied = false
@@ -830,7 +838,7 @@ func get_game_state() -> void:
 func _on_http_request_get_game_state_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	if response == "-1":
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(2).timeout
 		get_game_state()
 		print("Awaiting new game state.")
 	else:
@@ -875,6 +883,7 @@ func save_response_data_in_game_state(body: PackedByteArray) -> void:
 			GameState.diamond_position = board_state["diamond_position"]
 
 func determine_your_state() -> void:
+	update_board()
 	print("Last player: " + GameState.last_player)
 	print("Turn player: " + GameState.turn_player)
 	var your_state = ""
@@ -889,6 +898,7 @@ func determine_your_state() -> void:
 			challange_last_move()
 		else:
 			your_state = ""
+			you_clicked_challange_or_accept_button = false
 	if your_state != "challange":
 		you_clicked_challange_or_accept_button = false
 		if GameState.turn_player == GameState.your_username:
@@ -899,21 +909,57 @@ func determine_your_state() -> void:
 	update_board()
 	
 func wait_for_other_players() -> void:
+	selection_window.hide()
+	challange_window.hide()
 	get_game_state()
 	
 func challange_last_move() -> void:
 	if you_clicked_challange_or_accept_button == false:
 		selection_window.hide()
 		challange_window.show()
-		you_clicked_challange_or_accept_button = true
 	get_game_state()
 	
 func your_turn() -> void:
+	challange_window.hide()
 	draw_your_selection_window()
 	drawn_piece = get_random_piece_from_the_box(box) #the box will be assigned by the server
-	#print(box) #for testing only
 	selection_window.underline_this_piece(drawn_piece)
-	#start move timer
-	#make a move
-	#update game state info
-	#send it to the server
+
+func return_random_unoccupied_tile_2() -> Tile:
+	var empty_tiles = []
+
+	for tile in board.tiles.get_children():
+		if tile is Tile and not tile.tile_is_occupied: 
+			empty_tiles.append(tile)
+
+	if empty_tiles.size() > 0:
+		var random_tile = empty_tiles[randi() % empty_tiles.size()]
+		return board.tiles.get_node(NodePath(random_tile.name))
+		print(random_tile.name)
+		update_board()
+	else:
+		return null
+
+func return_random_unoccupied_tile(piece_color: String) -> Tile:
+	var candidate_tiles: Array = []
+	
+	for tile in board.tiles.get_children():
+		var name_str = str(tile.name)
+		match piece_color:
+			"white":
+				if name_str[0] == "a" and not tile.tile_is_occupied:
+					candidate_tiles.append(tile)
+			"black":
+				if name_str[0] == "h" and not tile.tile_is_occupied:
+					candidate_tiles.append(tile)
+			"red":
+				if name_str.substr(1).to_int() == 1 and not tile.tile_is_occupied:
+					candidate_tiles.append(tile)
+			"blue":
+				if name_str.substr(1).to_int() == 8 and not tile.tile_is_occupied:
+					candidate_tiles.append(tile)
+	
+	if candidate_tiles.size() > 0:
+		return candidate_tiles.pick_random()
+	else:
+		return null

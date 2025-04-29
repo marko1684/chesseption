@@ -8,9 +8,8 @@
 rotation = 1.57079
 script = ExtResource("1_nglv8")
 
-[node name="Removed_pieces" type="Node2D" parent="."]
-position = Vector2(228.997, 428.001)
-scale = Vector2(0.386111, 0.386111)
+[node name="Removed_pieces" parent="." instance=ExtResource("2_tx6nw")]
+position = Vector2(123.362, 170.218)
 
 [node name="board_sprite" type="Sprite2D" parent="."]
 z_index = -1

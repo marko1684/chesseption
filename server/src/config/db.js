@@ -4,6 +4,7 @@ const gameSchema = new mongoose.Schema({
     game_id: { type: String, required: true, unique: true },
     players: [{ player_id: String }],
     player_id: String,
+    next_player: String,
     lied: Boolean,
     next_player: String,
     accepted: [{ accept: Number }],

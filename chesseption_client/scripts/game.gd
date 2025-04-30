@@ -211,24 +211,28 @@ func remove_piece_from_this_tile(new_tile_name: String) -> void:
 	if board.white_piece_position.name == new_tile_name:
 		board.white_piece_position = board.removed_pieces
 		white_piece.position = board.removed_pieces.global_position 
+		white_piece.this_piece = "king"
 		board.white_piece_position = return_random_unoccupied_tile("white")
 		board.white_piece_position.tile_is_occupied = true
 		GameState.points[0] -= 1
 	if board.black_piece_position.name == new_tile_name:
 		board.black_piece_position = board.removed_pieces
 		black_piece.position = board.removed_pieces.global_position 
+		black_piece.this_piece = "king"
 		board.black_piece_position = return_random_unoccupied_tile("black")
 		board.black_piece_position.tile_is_occupied = true
 		GameState.points[1] -= 1
 	if board.red_piece_position.name == new_tile_name:
 		board.red_piece_position = board.removed_pieces
 		red_piece.position = board.removed_pieces.global_position 
+		red_piece.this_piece = "king"
 		board.red_piece_position = return_random_unoccupied_tile("red")
 		board.red_piece_position.tile_is_occupied = true
 		GameState.points[2] -= 1
 	if board.blue_piece_position.name == new_tile_name:
 		board.blue_piece_position = board.removed_pieces
 		blue_piece.position = board.removed_pieces.global_position 
+		blue_piece.this_piece = "king"
 		board.blue_piece_position = return_random_unoccupied_tile("blue")
 		board.blue_piece_position.tile_is_occupied = true
 		GameState.points[3] -= 1

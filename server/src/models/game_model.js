@@ -105,7 +105,7 @@ const game_model = {
         await new_game.save();
     },
 
-    async make_move(game_id, player_id, lied, new_board_state) {
+    async make_move(game_id, player_id, lied, box, new_board_state) {
         const current_game = await Game.findOne({ game_id: game_id });
         if (!current_game) {
             throw new Error('Game not found');
@@ -128,6 +128,8 @@ const game_model = {
                 points: data.points,
             });
         }
+
+        current_game.box = box;
 
         current_game.board_state.diamond_position = new_board_state.diamond_position;
 

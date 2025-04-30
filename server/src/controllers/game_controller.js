@@ -14,8 +14,8 @@ const gameController = {
 
     async make_move(req, res) {
         try {
-            const { game_id, player_id, lied, new_board_state } = req.body;
-            const updated_game = await game_model.make_move(game_id, player_id, lied, new_board_state);
+            const { game_id, player_id, lied, box, new_board_state } = req.body;
+            const updated_game = await game_model.make_move(game_id, player_id, lied, box, new_board_state);
 
             console.log('Request body for making a move:');
             console.log(JSON.stringify(req.body, null, 2));

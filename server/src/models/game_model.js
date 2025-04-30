@@ -110,10 +110,31 @@ const game_model = {
         if (!current_game) {
             throw new Error('Game not found');
         }
-        current_game.last_move.board_state = current_game.board_state;
-        current_game.board_state = new_board_state;
+
+        current_game.last_move.board_state.player_positions = new Map();
+        for (const [player_id, data] of current_game.board_state.player_positions.entries()) {
+            current_game.last_move.board_state.player_positions.set(player_id, {
+                position: data.position,
+                points: data.points,
+            });
+        }
+
+        current_game.last_move.board_state.diamond_position = current_game.board_state.diamond_position;
+
+        current_game.board_state.player_positions = new Map();
+        for (const [player_id, data] of Object.entries(new_board_state.player_positions)) {
+            current_game.board_state.player_positions.set(player_id, {
+                position: data.position,
+                points: data.points,
+            });
+        }
+
+        current_game.board_state.diamond_position = new_board_state.diamond_position;
+
+        // current_game.last_move.board_state = current_game.board_state;
+        // current_game.board_state = new_board_state;
         current_game.player_id = player_id;
-        current_game.last_move.lied = lied;
+        current_game.lied = lied;
 
         const playerIndex = current_game.players.findIndex((p) => p.player_id === player_id);
         if (playerIndex === -1) throw new Error('Player not found in game');
@@ -148,7 +169,7 @@ const game_model = {
         }
 
         if (current_game.lied === true) {
-            current_game.status = 'challangedblabla';
+            current_game.status = 'in_progress';
 
             current_game.board_state.player_positions = current_game.last_move.board_state.player_positions;
             current_game.board_state.diamond_position = current_game.last_move.board_state.diamond_position;
@@ -178,6 +199,7 @@ const game_model = {
             current_game.accepted = current_game.accepted.map(() => ({
                 accept: 0,
             }));
+            current_game.lied = false;
         }
         await current_game.save();
         return current_game;

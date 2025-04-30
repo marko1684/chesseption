@@ -173,10 +173,16 @@ const game_model = {
         if (current_game.lied === true) {
             current_game.status = 'in_progress';
 
-            current_game.board_state.player_positions = current_game.last_move.board_state.player_positions;
+            current_game.board_state.player_positions = new Map();
+            for (const [playerId, data] of current_game.last_move.board_state.player_positions.entries()) {
+                current_game.board_state.player_positions.set(playerId, {
+                    position: data.position,
+                    points: data.points,
+                });
+            }
             current_game.board_state.diamond_position = current_game.last_move.board_state.diamond_position;
 
-            current_game.board_state.player_positions.get(player1_id).points += 1;
+            // current_game.board_state.player_positions.get(player1_id).points += 1;
             current_game.board_state.player_positions.get(player2_id).points -= 1;
         } else {
             current_game.board_state.player_positions.get(player1_id).points -= 1;

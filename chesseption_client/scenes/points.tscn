@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://cwdrkd3nlv41s"]
+
+[ext_resource type="Script" uid="uid://brpyurxl1aaso" path="res://scripts/points.gd" id="1_qq43p"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qq43p"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fug4t"]
+font_color = Color(0.678024, 0, 0.0498904, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7xsqv"]
+font_color = Color(0.127745, 0.20945, 0.67699, 1)
+
+[node name="Points" type="Node2D"]
+script = ExtResource("1_qq43p")
+
+[node name="white_points_label" type="Label" parent="."]
+offset_left = 36.0
+offset_top = 29.0
+offset_right = 141.0
+offset_bottom = 81.0
+text = "white"
+
+[node name="black_points_label" type="Label" parent="."]
+offset_left = 385.0
+offset_top = 33.0
+offset_right = 490.0
+offset_bottom = 85.0
+text = "black"
+label_settings = SubResource("LabelSettings_qq43p")
+
+[node name="red_points_label" type="Label" parent="."]
+visible = false
+offset_left = 35.0
+offset_top = 102.0
+offset_right = 140.0
+offset_bottom = 154.0
+text = "red"
+label_settings = SubResource("LabelSettings_fug4t")
+
+[node name="blue_points_label" type="Label" parent="."]
+visible = false
+offset_left = 388.0
+offset_top = 107.0
+offset_right = 493.0
+offset_bottom = 159.0
+text = "blue"
+label_settings = SubResource("LabelSettings_7xsqv")

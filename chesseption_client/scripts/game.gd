@@ -5,12 +5,14 @@ class_name Game extends Node2D
 @onready var diamond = $Diamond
 @onready var puff = $Puff
 @onready var challange_window = $ChallangeAPlayerWindow
+@onready var points = $Points
 
 @onready var white_piece = $Pieces/White_piece
 @onready var black_piece = $Pieces/Black_piece
 @onready var red_piece = $Pieces/Red_piece
 @onready var blue_piece = $Pieces/Blue_piece
 
+var your_index = -1
 var you_clicked_challange_or_accept_button = false
 var your_color = ""
 var your_piece = ""
@@ -44,18 +46,22 @@ func setup_game() -> void:
 func set_your_king() -> void:
 	your_piece = "king"
 	if GameState.all_players_names[0] == GameState.your_username:
+		your_index = 0
 		your_color = "white"
 		your_king = white_piece
 		your_king_position = board.white_piece_position.name
 	elif GameState.all_players_names[1] == GameState.your_username:
+		your_index = 1
 		your_color = "black"
 		your_king = black_piece
 		your_king_position = board.black_piece_position.name
 	elif GameState.all_players_names[2] == GameState.your_username:
+		your_index = 2
 		your_color = "red"
 		your_king = red_piece
 		your_king_position = board.red_piece_position.name
 	elif GameState.all_players_names[3] == GameState.your_username:
+		your_index = 3
 		your_color = "blue"
 		your_king = blue_piece
 		your_king_position = board.blue_piece_position.name
@@ -117,6 +123,7 @@ func _on_http_request_move_accepted_request_completed(result: int, response_code
 
 
 func update_board() -> void:
+	points.update_points()
 	board.free_all_occupied_tiles()
 	board.diamond_position = board.find_tile_by_name(GameState.diamond_position)
 	update_white_piece_figure_and_position()
@@ -201,27 +208,30 @@ func remove_piece_from_this_tile(new_tile_name: String) -> void:
 		white_piece.position = board.removed_pieces.global_position 
 		board.white_piece_position = return_random_unoccupied_tile("white")
 		board.white_piece_position.tile_is_occupied = true
+		GameState.points[0] -= 1
 	if board.black_piece_position.name == new_tile_name:
 		board.black_piece_position = board.removed_pieces
 		black_piece.position = board.removed_pieces.global_position 
 		board.black_piece_position = return_random_unoccupied_tile("black")
 		board.black_piece_position.tile_is_occupied = true
+		GameState.points[1] -= 1
 	if board.red_piece_position.name == new_tile_name:
 		board.red_piece_position = board.removed_pieces
 		red_piece.position = board.removed_pieces.global_position 
 		board.red_piece_position = return_random_unoccupied_tile("red")
 		board.red_piece_position.tile_is_occupied = true
+		GameState.points[2] -= 1
 	if board.blue_piece_position.name == new_tile_name:
 		board.blue_piece_position = board.removed_pieces
 		blue_piece.position = board.removed_pieces.global_position 
 		board.blue_piece_position = return_random_unoccupied_tile("blue")
 		board.blue_piece_position.tile_is_occupied = true
+		GameState.points[3] -= 1
 	if board.diamond_position.name == new_tile_name:
 		
-		#board.diamond_position = board.removed_pieces
-		#diamond.position = board.removed_pieces.global_position
+		GameState.points[your_index] += 1
 		place_diamond_to_a_random_tile()
-
+	points.update_points()
 func place_diamond_to_a_random_tile() -> void:
 	var new_tile = null
 	var random_tile_number = 0
@@ -735,11 +745,11 @@ func make_move() -> void:
 					"player_positions": {
 					GameState.all_players_names[0]: {
 						"position": GameState.pieces_positions[0],
-						"points": int(GameState.pieces_positions[0])
+						"points": int(GameState.points[0])
 				},
 					GameState.all_players_names[1]: {
 						"position": GameState.pieces_positions[1],
-						"points": int(GameState.pieces_positions[1])
+						"points": int(GameState.points[1])
 				}
 				},
 					"diamond_position": GameState.diamond_position
@@ -754,15 +764,15 @@ func make_move() -> void:
 					"player_positions": {
 					GameState.all_players_names[0]: {
 						"position": GameState.pieces_positions[0],
-						"points": int(GameState.pieces_positions[0])
+						"points": int(GameState.points[0])
 				},
 					GameState.all_players_names[1]: {
 						"position": GameState.pieces_positions[1],
-						"points": int(GameState.pieces_positions[1])
+						"points": int(GameState.points[1])
 				},
 				GameState.all_players_names[2]: {
 						"position": GameState.pieces_positions[2],
-						"points": int(GameState.pieces_positions[2])
+						"points": int(GameState.points[2])
 				}
 				},
 					"diamond_position": GameState.diamond_position
@@ -777,19 +787,19 @@ func make_move() -> void:
 					"player_positions": {
 					GameState.all_players_names[0]: {
 						"position": GameState.pieces_positions[0],
-						"points": int(GameState.pieces_positions[0])
+						"points": int(GameState.points[0])
 				},
 					GameState.all_players_names[1]: {
 						"position": GameState.pieces_positions[1],
-						"points": int(GameState.pieces_positions[1])
+						"points": int(GameState.points[1])
 				},
 				GameState.all_players_names[2]: {
 						"position": GameState.pieces_positions[2],
-						"points": int(GameState.pieces_positions[2])
+						"points": int(GameState.points[2])
 				},
 				GameState.all_players_names[3]: {
 						"position": GameState.pieces_positions[3],
-						"points": int(GameState.pieces_positions[3])
+						"points": int(GameState.points[3])
 				}
 				},
 					"diamond_position": GameState.diamond_position
@@ -845,8 +855,7 @@ func save_response_data_in_game_state(body: PackedByteArray) -> void:
 		var players = data["players"]
 		var board_state = data["board_state"]
 		var player_positions = board_state["player_positions"]
-		
-		GameState.box = data["box"]
+
 		GameState.turn_player = data["next_player"]
 		if data["player_id"] == '123':
 			GameState.last_player = GameState.turn_player
@@ -856,7 +865,11 @@ func save_response_data_in_game_state(body: PackedByteArray) -> void:
 		GameState.accepted_array = data["accepted"]
 		GameState.all_players_names = []
 		GameState.pieces_positions = []
-
+		GameState.points = []
+		GameState.box = []
+		for element in data["box"]:
+			GameState.box.append(int(element))
+			
 		for player in players:
 			if "player_id" in player:
 				var player_name = player["player_id"]
@@ -868,7 +881,7 @@ func save_response_data_in_game_state(body: PackedByteArray) -> void:
 						GameState.pieces_positions.append(pos_data["position"])
 					if "points" in pos_data:
 						GameState.points.append(pos_data["points"])
-
+						print(str(GameState.points))
 		if "diamond_position" in board_state:
 			GameState.diamond_position = board_state["diamond_position"]
 

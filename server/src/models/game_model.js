@@ -110,6 +110,7 @@ const game_model = {
         if (!current_game) {
             throw new Error('Game not found');
         }
+<<<<<<< Updated upstream
 
         current_game.last_move.board_state.player_positions = new Map();
         for (const [player_id, data] of current_game.board_state.player_positions.entries()) {
@@ -137,6 +138,12 @@ const game_model = {
         // current_game.board_state = new_board_state;
         current_game.player_id = player_id;
         current_game.lied = lied;
+=======
+        current_game.last_move.board_state = current_game.board_state;
+        current_game.board_state = new_board_state;
+        current_game.player_id = player_id;
+        current_game.last_move.lied = lied;
+>>>>>>> Stashed changes
 
         const playerIndex = current_game.players.findIndex((p) => p.player_id === player_id);
         if (playerIndex === -1) throw new Error('Player not found in game');

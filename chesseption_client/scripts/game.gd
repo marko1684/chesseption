@@ -153,7 +153,7 @@ func get_random_piece_from_the_box() -> String:
 
 	if available_indexes.is_empty():
 		GameState.box = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-		get_random_piece_from_the_box()
+		return get_random_piece_from_the_box()
 	
 	var chosen_index = available_indexes[randi() % available_indexes.size()]
 	GameState.box[chosen_index] = 0

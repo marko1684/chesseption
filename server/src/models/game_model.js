@@ -128,15 +128,28 @@ const game_model = {
                 points: data.points,
             });
         }
+        console.log('Incoming box:', box);
 
-        current_game.box = box;
+        // current_game.box = box;
+
+        if (Array.isArray(box)) {
+            for (let i = 0; i < box.length; i++) {
+                current_game.box[i] = box[i];
+            }
+        } else {
+            console.log('error');
+            throw new Error('Invalid box data');
+        }
 
         current_game.board_state.diamond_position = new_board_state.diamond_position;
 
-        // current_game.last_move.board_state = current_game.board_state;
-        // current_game.board_state = new_board_state;
         current_game.player_id = player_id;
         current_game.lied = lied;
+
+        // const all_gone = current_game.box.every((entry) => entry === 0);
+        // if (all_gone) {
+        //     current_game.box = current_game.box.map(() => 1);
+        // }
 
         const playerIndex = current_game.players.findIndex((p) => p.player_id === player_id);
         if (playerIndex === -1) throw new Error('Player not found in game');
@@ -189,7 +202,7 @@ const game_model = {
         }
 
         current_game.accepted = current_game.players.map(() => ({ accept: 0 }));
-
+        current_game.lied = false;
         await current_game.save();
         return current_game;
     },

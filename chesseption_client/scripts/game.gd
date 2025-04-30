@@ -14,7 +14,6 @@ class_name Game extends Node2D
 @onready var box: Array = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] #This is temporary, real box will be assigned by the server
 
 var you_clicked_challange_or_accept_button = false
-var your_index = -1
 var your_color = ""
 var your_piece = ""
 var your_king = null #the piece you will be controling
@@ -48,22 +47,18 @@ func setup_game() -> void:
 func set_your_king() -> void:
 	your_piece = "king"
 	if GameState.all_players_names[0] == GameState.your_username:
-		your_index = 0
 		your_color = "white"
 		your_king = white_piece
 		your_king_position = board.white_piece_position.name
 	elif GameState.all_players_names[1] == GameState.your_username:
-		your_index = 1
 		your_color = "black"
 		your_king = black_piece
 		your_king_position = board.black_piece_position.name
-	elif GameState.game_type == 3 and GameState.all_players_names[2] == GameState.your_username:
-		your_index = 2
+	elif GameState.all_players_names[2] == GameState.your_username:
 		your_color = "red"
 		your_king = red_piece
 		your_king_position = board.red_piece_position.name
-	elif GameState.game_type == 4 and GameState.all_players_names[3] == GameState.your_username:
-		your_index = 3
+	elif GameState.all_players_names[3] == GameState.your_username:
 		your_color = "blue"
 		your_king = blue_piece
 		your_king_position = board.blue_piece_position.name

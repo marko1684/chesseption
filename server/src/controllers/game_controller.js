@@ -16,6 +16,7 @@ const gameController = {
         try {
             const { game_id, player_id, lied, new_board_state } = req.body;
             const updated_game = await game_model.make_move(game_id, player_id, lied, new_board_state);
+<<<<<<< Updated upstream
 
             console.log('Request body for making a move:');
             console.log(JSON.stringify(req.body, null, 2));
@@ -23,6 +24,11 @@ const gameController = {
             console.log('Updated game after making a move:');
             console.log(JSON.stringify(updated_game, null, 2));
 
+=======
+            console.log(req.body);
+            console.log('qurac');
+            console.log(updated_game);
+>>>>>>> Stashed changes
             res.json(updated_game);
         } catch (error) {
             res.status(500).json({ error: error.message });

@@ -197,6 +197,11 @@ func _on_piece_moved(new_tile_name: String) -> void:
 	if your_color == "blue":
 		board.blue_piece_position = board.tiles.get_node(NodePath(your_king_position))
 	
+	if your_piece == drawn_piece:
+		GameState.lied = false
+	else:
+		GameState.lied = true
+		
 	update_gamestate()
 	unhighlight_all_squares()
 	selection_window.remove_underline()
@@ -658,10 +663,6 @@ func update_gamestate() -> void:
 			GameState.pieces_positions[3]= board.blue_piece_position.name + blue_piece_name
 		
 	GameState.diamond_position = board.diamond_position.name
-	if your_piece == drawn_piece:
-		GameState.lied = false
-	else:
-		GameState.lied = true
 	
 
 func update_white_piece_figure_and_position() -> void:
@@ -735,6 +736,7 @@ func update_blue_piece_figure_and_position() -> void:
 
 func make_move() -> void:
 	var data
+	print(str(GameState.box))
 	if GameState.game_type == 2:
 		data = {
 				"game_id": GameState.lobby_id,
@@ -760,6 +762,7 @@ func make_move() -> void:
 				"game_id": GameState.lobby_id,
 				"player_id": GameState.your_username,
 				"lied": GameState.lied,
+				"box": GameState.box,
 				"new_board_state": {
 					"player_positions": {
 					GameState.all_players_names[0]: {
@@ -783,6 +786,7 @@ func make_move() -> void:
 				"game_id": GameState.lobby_id,
 				"player_id": GameState.your_username,
 				"lied": GameState.lied,
+				"box": GameState.box,
 				"new_board_state": {
 					"player_positions": {
 					GameState.all_players_names[0]: {
@@ -869,7 +873,6 @@ func save_response_data_in_game_state(body: PackedByteArray) -> void:
 		GameState.box = []
 		for element in data["box"]:
 			GameState.box.append(int(element))
-			
 		for player in players:
 			if "player_id" in player:
 				var player_name = player["player_id"]
@@ -881,7 +884,6 @@ func save_response_data_in_game_state(body: PackedByteArray) -> void:
 						GameState.pieces_positions.append(pos_data["position"])
 					if "points" in pos_data:
 						GameState.points.append(pos_data["points"])
-						print(str(GameState.points))
 		if "diamond_position" in board_state:
 			GameState.diamond_position = board_state["diamond_position"]
 

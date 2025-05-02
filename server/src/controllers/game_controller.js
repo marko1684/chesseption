@@ -94,6 +94,22 @@ const gameController = {
             res.status(500).json({ error: error.message });
         }
     },
+
+    async leave_lobby(req, res) {
+        try {
+            const { player_id } = req.body;
+            const lobby = await lobby_model.leave_lobby(player_id);
+            res.status(200).json({
+                status: 'success',
+                message: 'Player successfully removed from lobby',
+            });
+        } catch (err) {
+            res.status(400).json({
+                status: 'failure',
+                message: err.message || 'Failed to leave lobby',
+            });
+        }
+    },
 };
 
 module.exports = gameController;

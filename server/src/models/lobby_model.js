@@ -21,6 +21,17 @@ const lobby_model = {
 
         return lobby;
     },
+
+    async leave_lobby(player_id) {
+        const updatedLobby = await Lobby.findOneAndUpdate(
+            { 'players.player_id': player_id },
+            { $pull: { players: { player_id: player_id } } },
+            { new: true }
+        );
+        if (!updatedLobby) {
+            throw new Error('Failed to leave lobby');
+        }
+    },
 };
 
 module.exports = lobby_model;

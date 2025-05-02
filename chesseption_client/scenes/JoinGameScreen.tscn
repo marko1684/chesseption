@@ -43,12 +43,22 @@ text = "Back
 
 [node name="Waiting_for_players_label" type="Label" parent="."]
 visible = false
-offset_left = 38.0
-offset_top = 91.0
-offset_right = 197.0
-offset_bottom = 134.0
+offset_left = 48.0
+offset_top = 97.0
+offset_right = 200.0
+offset_bottom = 155.0
 scale = Vector2(3, 3)
-text = "Waiting for players..."
+text = "Searching for other players."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Cancel_button" type="Button" parent="."]
+visible = false
+offset_left = 173.0
+offset_top = 954.0
+offset_right = 365.0
+offset_bottom = 1033.0
+text = "Cancel"
 
 [connection signal="mouse_entered" from="JoinTwoPlayerGame" to="." method="_on_join_two_player_game_mouse_entered"]
 [connection signal="mouse_exited" from="JoinTwoPlayerGame" to="." method="_on_join_two_player_game_mouse_exited"]
@@ -65,3 +75,6 @@ text = "Waiting for players..."
 [connection signal="mouse_entered" from="back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_entered"]
 [connection signal="mouse_exited" from="back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_exited"]
 [connection signal="pressed" from="back_to_main_menu" to="." method="_on_back_to_main_menu_pressed"]
+[connection signal="mouse_entered" from="Cancel_button" to="." method="_on_cancel_button_mouse_entered"]
+[connection signal="mouse_exited" from="Cancel_button" to="." method="_on_cancel_button_mouse_exited"]
+[connection signal="pressed" from="Cancel_button" to="." method="_on_cancel_button_pressed"]

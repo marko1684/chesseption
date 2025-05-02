@@ -1,3 +1,17 @@
-[gd_scene format=3 uid="uid://bvasg4kun8wco"]
+[gd_scene load_steps=2 format=3 uid="uid://bvasg4kun8wco"]
+
+[ext_resource type="Script" uid="uid://rfrkg6vscxx1" path="res://scripts/end_game_screen.gd" id="1_p1n5s"]
 
 [node name="EndGameScreen" type="Node2D"]
+script = ExtResource("1_p1n5s")
+
+[node name="back_to_main_menu" type="Button" parent="."]
+offset_left = 121.0
+offset_top = 1090.0
+offset_right = 427.0
+offset_bottom = 1166.0
+text = "back to main menu"
+
+[connection signal="mouse_entered" from="back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_entered"]
+[connection signal="mouse_exited" from="back_to_main_menu" to="." method="_on_back_to_main_menu_mouse_exited"]
+[connection signal="pressed" from="back_to_main_menu" to="." method="_on_back_to_main_menu_pressed"]

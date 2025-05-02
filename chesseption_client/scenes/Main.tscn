@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://lpq42cincwa4"]
+[gd_scene load_steps=10 format=3 uid="uid://lpq42cincwa4"]
 
 [ext_resource type="Script" uid="uid://nuq08iqevd0d" path="res://scripts/Main.gd" id="1_rarhs"]
 [ext_resource type="PackedScene" uid="uid://uduuggs45ldx" path="res://scenes/main_menu.tscn" id="2_vcsgt"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dmi5kyshq6kw2" path="res://scenes/OptionsScreen.tscn" id="5_c01mt"]
 [ext_resource type="PackedScene" uid="uid://b6alnkqic0mgk" path="res://scenes/rules_screen.tscn" id="7_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://dx8e53ul241nt" path="res://scenes/login.tscn" id="8_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://bvasg4kun8wco" path="res://scenes/EndGameScreen.tscn" id="8_q8u5g"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rarhs")
@@ -30,6 +31,9 @@ visible = false
 [node name="Rules" parent="." instance=ExtResource("7_nxtc6")]
 visible = false
 
+[node name="EndGameScreen" parent="." instance=ExtResource("8_q8u5g")]
+visible = false
+
 [node name="Music_player" type="AudioStreamPlayer2D" parent="."]
 
 [node name="SoundFX_player" type="AudioStreamPlayer2D" parent="."]
@@ -42,6 +46,9 @@ visible = false
 
 [node name="HTTPRequest_get_game_state" type="HTTPRequest" parent="."]
 
+[node name="HTTPRequest_cancel_search" type="HTTPRequest" parent="."]
+
 [connection signal="request_completed" from="HTTPRequest_login" to="." method="_on_http_request_login_request_completed"]
 [connection signal="request_completed" from="HTTPRequest_join_game" to="." method="_on_http_request_join_game_request_completed"]
 [connection signal="request_completed" from="HTTPRequest_get_game_state" to="." method="_on_http_request_get_game_state_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_cancel_search" to="." method="_on_http_request_cancel_search_request_completed"]

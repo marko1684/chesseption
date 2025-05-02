@@ -1,23 +1,19 @@
-class_name Profile_screen extends Node2D
+extends Node2D
 
-@onready var back_to_main_menu_button = $Back_to_main_menu
+@onready var general_info = $GeneralInfo
+@onready var notifications_screen = $NotificationsScreen
 
 signal back_to_main_menu_button_pressed()
 signal log_out_pressed()
 
-func _on_back_to_main_menu_mouse_entered() -> void:
-	back_to_main_menu_button.scale.x += 0.08
-	back_to_main_menu_button.scale.y += 0.08
-	back_to_main_menu_button.position.x -= 10
+func _ready() -> void:
+	notifications_screen.connect("back_button_pressed", Callable(self, "_on_back_button_pressed"))
+	general_info.connect("notifications_button_pressed", Callable(self, "_on_notifications_button_pressed"))
+	
+func _on_notifications_button_pressed() -> void:
+	general_info.hide()
+	notifications_screen.show()
 
-func _on_back_to_main_menu_mouse_exited() -> void:
-	back_to_main_menu_button.scale.x -= 0.08
-	back_to_main_menu_button.scale.y -= 0.08
-	back_to_main_menu_button.position.x += 10
-
-func _on_back_to_main_menu_pressed() -> void:
-	emit_signal("back_to_main_menu_button_pressed")
-
-
-func _on_log_out_button_pressed() -> void:
-	emit_signal("log_out_pressed")
+func _on_back_button_pressed() -> void:
+	general_info.show()
+	notifications_screen.hide()

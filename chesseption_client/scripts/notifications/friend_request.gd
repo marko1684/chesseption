@@ -1,0 +1,1 @@
+class_name Friend_request extends Node2D

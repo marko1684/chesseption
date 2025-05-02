@@ -1,0 +1,1 @@
+class_name Game_invitation extends Node2D

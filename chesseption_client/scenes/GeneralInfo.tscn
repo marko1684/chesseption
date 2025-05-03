@@ -1,42 +1,51 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpnxbcnlvkots"]
+[gd_scene load_steps=7 format=3 uid="uid://dpnxbcnlvkots"]
 
 [ext_resource type="Script" uid="uid://b4g2lfmpxrjut" path="res://scripts/general_info.gd" id="1_g0pbm"]
 [ext_resource type="Texture2D" uid="uid://cg5eap0t78t86" path="res://sprites/animation/dijamant/diamond_3.png" id="3_0ihbb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0pa4v"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_g0pbm"]
+font_color = Color(0.657511, 0.073999, 0.184733, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_d2q4a"]
+font_color = Color(0.260726, 0.513473, 0.203692, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_uwxis"]
+font_color = Color(0.736667, 0.13041, 0.122192, 1)
+
 [node name="GeneralInfo" type="Node2D"]
 script = ExtResource("1_g0pbm")
 
 [node name="Player_icon" type="Sprite2D" parent="."]
-position = Vector2(266, 126.31)
-scale = Vector2(0.303472, 0.342625)
+position = Vector2(270, 95)
+scale = Vector2(0.250006, 0.262016)
 texture = ExtResource("3_0ihbb")
 
-[node name="Label" type="Label" parent="."]
-offset_left = 147.0
-offset_top = 230.31
-offset_right = 262.0
-offset_bottom = 267.31
+[node name="Username_label" type="Label" parent="."]
+offset_left = 139.0
+offset_top = 203.0
+offset_right = 254.0
+offset_bottom = 240.0
 scale = Vector2(2.5, 2.5)
 text = "Player Name"
 label_settings = SubResource("LabelSettings_0pa4v")
 
 [node name="Label2" type="Label" parent="."]
-offset_left = 40.0
-offset_top = 434.31
-offset_right = 161.0
-offset_bottom = 535.31
+offset_left = 35.0
+offset_top = 408.0
+offset_right = 156.0
+offset_bottom = 509.0
 text = "Ranked:
 
 
 Normal:"
 
 [node name="Label3" type="Label" parent="."]
-offset_left = 121.0
-offset_top = 360.31
-offset_right = 477.0
-offset_bottom = 409.31
+offset_left = 116.0
+offset_top = 334.0
+offset_right = 472.0
+offset_bottom = 383.0
 text = "wins       loses          games played        MMR
 "
 
@@ -55,10 +64,10 @@ offset_bottom = 1157.0
 text = "Back"
 
 [node name="Label4" type="Label" parent="."]
-offset_left = 218.0
-offset_top = 570.0
-offset_right = 377.0
-offset_bottom = 593.0
+offset_left = 233.0
+offset_top = 545.69
+offset_right = 316.0
+offset_bottom = 568.69
 text = "Friendlist:"
 
 [node name="Notifications_button" type="Button" parent="."]
@@ -68,14 +77,89 @@ offset_right = 536.0
 offset_bottom = 73.0
 text = "!"
 
+[node name="name_length_warning_label" type="Label" parent="."]
+visible = false
+offset_left = 23.0
+offset_top = 638.0
+offset_right = 376.0
+offset_bottom = 661.0
+text = "Name has to be between 4-16 characters long"
+label_settings = SubResource("LabelSettings_g0pbm")
+
+[node name="request_sent_label" type="Label" parent="."]
+visible = false
+offset_left = 22.0
+offset_top = 636.0
+offset_right = 184.0
+offset_bottom = 659.0
+text = "Request_sent!"
+label_settings = SubResource("LabelSettings_d2q4a")
+
+[node name="player_not_found_label" type="Label" parent="."]
+visible = false
+offset_left = 22.0
+offset_top = 636.0
+offset_right = 375.0
+offset_bottom = 659.0
+text = "Player not found."
+label_settings = SubResource("LabelSettings_g0pbm")
+
+[node name="Send_friend_request_button" type="Button" parent="."]
+offset_left = 349.0
+offset_top = 583.69
+offset_right = 510.0
+offset_bottom = 627.69
+text = "Send friend request"
+
+[node name="Friend_request_name" type="TextEdit" parent="."]
+offset_left = 16.0
+offset_top = 586.69
+offset_right = 332.0
+offset_bottom = 624.69
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 offset_left = 15.0
-offset_top = 621.0
+offset_top = 689.0
 offset_right = 522.0
 offset_bottom = 1075.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
+
+[node name="HTTPRequest_friend_request" type="HTTPRequest" parent="."]
+
+[node name="Edit_username_button" type="Button" parent="."]
+offset_left = 479.0
+offset_top = 219.0
+offset_right = 516.0
+offset_bottom = 254.0
+text = "/"
+
+[node name="Finish_username_editing" type="Button" parent="."]
+visible = false
+offset_left = 479.0
+offset_top = 219.0
+offset_right = 516.0
+offset_bottom = 254.0
+text = "/"
+
+[node name="Username_edit" type="TextEdit" parent="."]
+visible = false
+offset_left = 68.0
+offset_top = 211.0
+offset_right = 463.0
+offset_bottom = 265.0
+
+[node name="Username_taken_label" type="Label" parent="."]
+visible = false
+offset_left = 147.0
+offset_top = 282.0
+offset_right = 387.0
+offset_bottom = 305.0
+text = "username_taken_label"
+label_settings = SubResource("LabelSettings_uwxis")
+
+[node name="HTTPRequest_change_username" type="HTTPRequest" parent="."]
 
 [connection signal="mouse_entered" from="Log_out_button" to="." method="_on_log_out_button_mouse_entered"]
 [connection signal="mouse_exited" from="Log_out_button" to="." method="_on_log_out_button_mouse_exited"]
@@ -86,3 +170,14 @@ layout_mode = 2
 [connection signal="mouse_entered" from="Notifications_button" to="." method="_on_notifications_button_mouse_entered"]
 [connection signal="mouse_exited" from="Notifications_button" to="." method="_on_notifications_button_mouse_exited"]
 [connection signal="pressed" from="Notifications_button" to="." method="_on_notifications_button_pressed"]
+[connection signal="mouse_entered" from="Send_friend_request_button" to="." method="_on_send_friend_request_button_mouse_entered"]
+[connection signal="mouse_exited" from="Send_friend_request_button" to="." method="_on_send_friend_request_button_mouse_exited"]
+[connection signal="pressed" from="Send_friend_request_button" to="." method="_on_send_friend_request_button_pressed"]
+[connection signal="request_completed" from="HTTPRequest_friend_request" to="." method="_on_http_request_friend_request_request_completed"]
+[connection signal="mouse_entered" from="Edit_username_button" to="." method="_on_edit_username_button_mouse_entered"]
+[connection signal="mouse_exited" from="Edit_username_button" to="." method="_on_edit_username_button_mouse_exited"]
+[connection signal="pressed" from="Edit_username_button" to="." method="_on_edit_username_button_pressed"]
+[connection signal="mouse_entered" from="Finish_username_editing" to="." method="_on_finish_username_editing_mouse_entered"]
+[connection signal="mouse_exited" from="Finish_username_editing" to="." method="_on_finish_username_editing_mouse_exited"]
+[connection signal="pressed" from="Finish_username_editing" to="." method="_on_finish_username_editing_pressed"]
+[connection signal="request_completed" from="HTTPRequest_change_username" to="." method="_on_http_request_change_username_request_completed"]

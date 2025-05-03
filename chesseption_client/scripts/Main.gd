@@ -46,6 +46,7 @@ func _on_login_pressed(username_from_textbox: String) -> void:
 	login_screen.hide()
 	main_menu.show()
 	GameState.your_username = username_from_textbox
+	profile_screen.general_info.username_label.text = username_from_textbox
 	login_player()
 	
 	
@@ -128,7 +129,7 @@ func pause_song():
 	
 func _on_cancel_game_search() -> void:
 	var data = {
-		"uid": GameState.your_username,
+		"uid": GameState.your_username
 	}
 	var json_data = JSON.stringify(data)
 	var headers = ["Content-Type: application/json"]

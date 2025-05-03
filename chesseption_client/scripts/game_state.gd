@@ -2,6 +2,7 @@ extends Node
 
 var server_address = "http://10.242.215.184:3000"
 var your_username: String = ""
+var your_icon = null
 var game_id: String = "ggfddedfssdffgdshijl"
 var lobby_id = ""
 var game_type: int = 0

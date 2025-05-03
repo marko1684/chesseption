@@ -942,7 +942,6 @@ func return_random_unoccupied_tile_2() -> Tile:
 	if empty_tiles.size() > 0:
 		var random_tile = empty_tiles[randi() % empty_tiles.size()]
 		return board.tiles.get_node(NodePath(random_tile.name))
-		update_board()
 	else:
 		return null
 

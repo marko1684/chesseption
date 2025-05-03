@@ -1,0 +1,94 @@
+[gd_scene load_steps=8 format=3 uid="uid://c4fk3asdt7ngv"]
+
+[ext_resource type="Texture2D" uid="uid://bpwnqhee23cxh" path="res://sprites/chess_pieces/beli_piun.png" id="1_gdgif"]
+[ext_resource type="Script" uid="uid://b6ieq0q2wd2uq" path="res://scripts/selection_animation_window.gd" id="1_kuhrc"]
+[ext_resource type="Texture2D" uid="uid://ckr3p71q2pwas" path="res://sprites/chess_pieces/beli_lovac.png" id="2_dcxwh"]
+[ext_resource type="Texture2D" uid="uid://bjqnj283oc0h2" path="res://sprites/chess_pieces/beli_konj.png" id="3_kuhrc"]
+[ext_resource type="Texture2D" uid="uid://c71mnblam1gvf" path="res://sprites/chess_pieces/beli_top.png" id="4_ok21t"]
+[ext_resource type="Texture2D" uid="uid://bv4anbglj81k7" path="res://sprites/chess_pieces/bela_kraljica.png" id="5_cvrkd"]
+[ext_resource type="Texture2D" uid="uid://7rot20g2yll0" path="res://sprites/game_scene/background_pieces.png" id="6_dcxwh"]
+
+[node name="SelectionAnimationWindow" type="Node2D"]
+script = ExtResource("1_kuhrc")
+
+[node name="pieces" type="Node2D" parent="."]
+
+[node name="BeliPiun" type="Sprite2D" parent="pieces"]
+position = Vector2(40, 50)
+scale = Vector2(0.235, 0.21)
+texture = ExtResource("1_gdgif")
+
+[node name="BeliPiun2" type="Sprite2D" parent="pieces"]
+position = Vector2(106, 50)
+scale = Vector2(0.235, 0.21)
+texture = ExtResource("1_gdgif")
+
+[node name="BeliPiun3" type="Sprite2D" parent="pieces"]
+position = Vector2(172, 50)
+scale = Vector2(0.235, 0.21)
+texture = ExtResource("1_gdgif")
+
+[node name="BeliPiun4" type="Sprite2D" parent="pieces"]
+position = Vector2(238, 50)
+scale = Vector2(0.235, 0.21)
+texture = ExtResource("1_gdgif")
+
+[node name="BeliPiun5" type="Sprite2D" parent="pieces"]
+position = Vector2(304, 50)
+scale = Vector2(0.235, 0.21)
+texture = ExtResource("1_gdgif")
+
+[node name="BeliPiun6" type="Sprite2D" parent="pieces"]
+position = Vector2(370, 50)
+scale = Vector2(0.235, 0.21)
+texture = ExtResource("1_gdgif")
+
+[node name="BeliPiun7" type="Sprite2D" parent="pieces"]
+position = Vector2(436, 50)
+scale = Vector2(0.235, 0.21)
+texture = ExtResource("1_gdgif")
+
+[node name="BeliPiun8" type="Sprite2D" parent="pieces"]
+position = Vector2(502, 50)
+scale = Vector2(0.235, 0.21)
+texture = ExtResource("1_gdgif")
+
+[node name="BeliLovac" type="Sprite2D" parent="pieces"]
+position = Vector2(40, 134)
+scale = Vector2(0.235, 0.213)
+texture = ExtResource("2_dcxwh")
+
+[node name="BeliLovac2" type="Sprite2D" parent="pieces"]
+position = Vector2(115, 134)
+scale = Vector2(0.235, 0.213)
+texture = ExtResource("2_dcxwh")
+
+[node name="BeliKonj" type="Sprite2D" parent="pieces"]
+position = Vector2(190, 130)
+scale = Vector2(0.235, 0.235)
+texture = ExtResource("3_kuhrc")
+
+[node name="BeliKonj2" type="Sprite2D" parent="pieces"]
+position = Vector2(265, 130)
+scale = Vector2(0.235, 0.235)
+texture = ExtResource("3_kuhrc")
+
+[node name="BeliTop" type="Sprite2D" parent="pieces"]
+position = Vector2(340, 130)
+scale = Vector2(0.235, 0.235)
+texture = ExtResource("4_ok21t")
+
+[node name="BeliTop2" type="Sprite2D" parent="pieces"]
+position = Vector2(415, 130)
+scale = Vector2(0.235, 0.235)
+texture = ExtResource("4_ok21t")
+
+[node name="BelaKraljica" type="Sprite2D" parent="pieces"]
+position = Vector2(490, 130)
+scale = Vector2(0.235, 0.235)
+texture = ExtResource("5_cvrkd")
+
+[node name="BackgroundPieces" type="Sprite2D" parent="."]
+position = Vector2(341, 98)
+scale = Vector2(1, 0.707965)
+texture = ExtResource("6_dcxwh")

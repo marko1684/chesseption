@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://ds6pbmbbd1mmn"]
+
+[ext_resource type="Script" uid="uid://flj3gdmymbr8" path="res://scripts/friend_invitation_scene.gd" id="1_l62hb"]
+[ext_resource type="Texture2D" uid="uid://cg5eap0t78t86" path="res://sprites/animation/dijamant/diamond_3.png" id="2_bcm0o"]
+
+[node name="FriendInvitationScene" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_l62hb")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 120)
+offset_left = 11.0
+offset_top = 13.0
+offset_right = 525.0
+offset_bottom = 118.0
+color = Color(0.688978, 0.501251, 0.229668, 1)
+
+[node name="Invite_button" type="Button" parent="ColorRect"]
+offset_left = 382.0
+offset_top = 31.0
+offset_right = 502.0
+offset_bottom = 87.0
+text = "Invite"
+
+[node name="Username_label" type="Label" parent="ColorRect"]
+offset_left = 148.0
+offset_top = 40.0
+offset_right = 398.0
+offset_bottom = 111.0
+text = "username"
+
+[node name="icon_sprite" type="Sprite2D" parent="ColorRect"]
+position = Vector2(52, 55)
+scale = Vector2(0.14181, 0.164869)
+texture = ExtResource("2_bcm0o")

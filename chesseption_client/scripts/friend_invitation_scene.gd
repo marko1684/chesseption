@@ -1,0 +1,1 @@
+class_name Friend_invitation_scene extends Control

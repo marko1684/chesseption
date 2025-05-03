@@ -1,0 +1,98 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1aj2etav3j0n"]
+
+[ext_resource type="Script" uid="uid://clr3gc5kfnw04" path="res://scripts/custom_game_lobby.gd" id="1_mi67p"]
+
+[node name="CustomGameLobby" type="Node2D"]
+script = ExtResource("1_mi67p")
+
+[node name="Player_1" type="Node2D" parent="."]
+position = Vector2(49, 108)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player_1"]
+position = Vector2(3.63373, 4.1703)
+
+[node name="Label" type="Label" parent="Player_1"]
+offset_left = 88.0
+offset_top = -18.0
+offset_right = 401.0
+offset_bottom = 33.0
+
+[node name="Player_2" type="Node2D" parent="."]
+position = Vector2(49, 235)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player_2"]
+position = Vector2(3.63373, 4.1703)
+
+[node name="Label" type="Label" parent="Player_2"]
+offset_left = 88.0
+offset_top = -18.0
+offset_right = 401.0
+offset_bottom = 33.0
+
+[node name="Player_3" type="Node2D" parent="."]
+position = Vector2(49, 346)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player_3"]
+position = Vector2(3.63373, 4.1703)
+
+[node name="Label" type="Label" parent="Player_3"]
+offset_left = 88.0
+offset_top = -18.0
+offset_right = 401.0
+offset_bottom = 33.0
+
+[node name="Player_4" type="Node2D" parent="."]
+position = Vector2(54, 474)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player_4"]
+position = Vector2(3.63373, 4.1703)
+
+[node name="Label" type="Label" parent="Player_4"]
+offset_left = 88.0
+offset_top = -18.0
+offset_right = 401.0
+offset_bottom = 33.0
+
+[node name="Label" type="Label" parent="."]
+offset_left = 207.0
+offset_top = 526.0
+offset_right = 543.0
+offset_bottom = 583.0
+text = "Invite friends:"
+
+[node name="Back_button" type="Button" parent="."]
+offset_left = 402.0
+offset_top = 1133.0
+offset_right = 522.0
+offset_bottom = 1182.0
+text = "back
+"
+
+[node name="Start_game_button" type="Button" parent="."]
+offset_left = 78.0
+offset_top = 1132.0
+offset_right = 329.0
+offset_bottom = 1181.0
+text = "START"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+offset_left = 16.0
+offset_top = 556.0
+offset_right = 525.0
+offset_bottom = 1114.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+
+[node name="HTTPRequest_lobby_destroyed" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_start_game" type="HTTPRequest" parent="."]
+
+[connection signal="mouse_entered" from="Back_button" to="." method="_on_back_button_mouse_entered"]
+[connection signal="mouse_exited" from="Back_button" to="." method="_on_back_button_mouse_exited"]
+[connection signal="pressed" from="Back_button" to="." method="_on_back_button_pressed"]
+[connection signal="mouse_entered" from="Start_game_button" to="." method="_on_start_game_button_mouse_entered"]
+[connection signal="mouse_exited" from="Start_game_button" to="." method="_on_start_game_button_mouse_exited"]
+[connection signal="pressed" from="Start_game_button" to="." method="_on_start_game_button_pressed"]
+[connection signal="request_completed" from="HTTPRequest_lobby_destroyed" to="." method="_on_http_request_lobby_destroyed_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_start_game" to="." method="_on_http_request_start_game_request_completed"]

@@ -2,7 +2,7 @@ class_name Main extends Node2D
 
 @onready var main_menu = $Main_menu
 @onready var profile_screen = $ProfileScreen
-@onready var join_game_screen = $JoinGameScreen
+@onready var join_or_create_game_screen = $JoinOrCreateGameScreen
 @onready var game_screen = $Game
 @onready var options_screen = $OptionsScreen
 @onready var end_game_screen = $EndGameScreen
@@ -17,12 +17,11 @@ func _ready() -> void:
 	main_menu.connect("play_button_pressed", Callable(self, "_on_play_button_pressed"))
 	main_menu.connect("view_profile_button_pressed", Callable(self, "_on_view_profile_button_pressed"))
 	main_menu.connect("options_button_pressed", Callable(self, "_on_view_options_button_pressed"))
-	join_game_screen.connect("back_to_main_menu", Callable(self, "_on_back_to_main_menu_button_pressed"))
-	join_game_screen.connect("join_2_player_game", Callable(self, "_on_join_2_player_game"))
-	join_game_screen.connect("join_3_player_game", Callable(self, "_on_join_3_player_game"))
-	join_game_screen.connect("join_4_player_game", Callable(self, "_on_join_4_player_game"))
-	join_game_screen.connect("create_custom_game", Callable(self, "_on_create_custom_game"))
-	join_game_screen.connect("cancel_game_search", Callable(self, "_on_cancel_game_search"))
+	join_or_create_game_screen.join_game_screen.connect("back_to_main_menu", Callable(self, "_on_back_to_main_menu_button_pressed"))
+	join_or_create_game_screen.join_game_screen.connect("join_2_player_game", Callable(self, "_on_join_2_player_game"))
+	join_or_create_game_screen.join_game_screen.connect("join_3_player_game", Callable(self, "_on_join_3_player_game"))
+	join_or_create_game_screen.join_game_screen.connect("join_4_player_game", Callable(self, "_on_join_4_player_game"))
+	join_or_create_game_screen.join_game_screen.connect("cancel_game_search", Callable(self, "_on_cancel_game_search"))
 	profile_screen.general_info.connect("back_to_main_menu_button_pressed", Callable(self, "_on_exit_profile_view"))
 	profile_screen.general_info.connect("log_out_pressed", Callable(self, "_on_log_out_pressed"))
 	options_screen.connect("back_to_main_menu_button_pressed", Callable(self, "_on_exit_options_view"))
@@ -86,30 +85,24 @@ func _on_exit_options_view() -> void:
 	main_menu.show()
 	
 func _on_join_2_player_game() -> void:
-	join_game_screen.waiting_for_players_label.show()
+	join_or_create_game_screen.join_game_screen.waiting_for_players_label.show()
 	join_lobby(2)
 
 func _on_join_3_player_game() -> void:
-	join_game_screen.waiting_for_players_label.show()
+	join_or_create_game_screen.join_game_screen.waiting_for_players_label.show()
 	join_lobby(3)
 
 func _on_join_4_player_game() -> void:
-	join_game_screen.waiting_for_players_label.show()
+	join_or_create_game_screen.join_game_screen.waiting_for_players_label.show()
 	join_lobby(4)
-
-func _on_create_custom_game() -> void:
-	game_screen.show()
-	join_game_screen.hide()
-	pause_song()
-	play_song("res://audio/doodle_lobby_song.mp3")
 	
 func _on_back_to_main_menu_button_pressed() -> void:
 	main_menu.show()
-	join_game_screen.hide()
+	join_or_create_game_screen.hide()
 
 func _on_play_button_pressed() -> void:
 	main_menu.hide()
-	join_game_screen.show()
+	join_or_create_game_screen.show()
 
 func _on_view_profile_button_pressed() -> void:
 	profile_screen.show()
@@ -226,6 +219,6 @@ func _on_http_request_get_game_state_request_completed(result: int, response_cod
 func join_game() -> void:
 		game_screen.setup_game()
 		game_screen.show()
-		join_game_screen.hide()
+		join_or_create_game_screen.hide()
 		pause_song()
 		#play_song("res://audio/doodle_lobby_song.mp3")

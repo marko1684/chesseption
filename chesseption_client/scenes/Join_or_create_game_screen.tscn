@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8o7se0j8puwy"]
+
+[ext_resource type="Script" uid="uid://dhd31iw7r833a" path="res://scripts/join_or_create_game_screen.gd" id="1_gobf5"]
+[ext_resource type="PackedScene" uid="uid://5arrwic0hntk" path="res://scenes/JoinGameScreen.tscn" id="2_8omxf"]
+[ext_resource type="PackedScene" uid="uid://c1aj2etav3j0n" path="res://scenes/custom_game_lobby.tscn" id="3_0gsew"]
+
+[node name="JoinOrCreateGameScreen" type="Node2D"]
+script = ExtResource("1_gobf5")
+
+[node name="JoinGameScreen" parent="." instance=ExtResource("2_8omxf")]
+
+[node name="CustomGameLobby" parent="." instance=ExtResource("3_0gsew")]
+visible = false

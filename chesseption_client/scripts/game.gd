@@ -144,7 +144,7 @@ func update_board() -> void:
 		
 	draw_board()
 	
-func get_random_piece_from_the_box() -> String:
+func get_random_piece_from_the_box() -> Array:
 	var available_indexes = []
 	
 	for i in range(GameState.box.size()):
@@ -159,17 +159,17 @@ func get_random_piece_from_the_box() -> String:
 	GameState.box[chosen_index] = 0
 
 	if chosen_index <= 7:
-		return "pawn"
+		return ["pawn", chosen_index]
 	elif chosen_index <= 9:
-		return "bishop"
+		return ["bishop", chosen_index]
 	elif chosen_index <= 11:
-		return "knight"
+		return ["knight", chosen_index]
 	elif chosen_index <= 13:
-		return "rook"
+		return ["rook", chosen_index]
 	elif chosen_index == 14:
-		return "queen"
+		return ["queen", chosen_index]
 	else:
-		return "something went wrong"
+		return ["something went wrong", -1]
 
 func _on_piece_moved(new_tile_name: String) -> void:
 	selection_window.hide()
@@ -929,8 +929,11 @@ func challange_last_move() -> void:
 func your_turn() -> void:
 	challange_window.hide()
 	draw_your_selection_window()
-	drawn_piece = get_random_piece_from_the_box() #the box will be assigned by the server
+	var result = get_random_piece_from_the_box()
+	var drawn_piece_index = result[1]
+	drawn_piece = result[0]
 	selection_window.underline_this_piece(drawn_piece)
+	selection_window.underline_this_piece_by_index(drawn_piece_index)
 
 func return_random_unoccupied_tile_2() -> Tile:
 	var empty_tiles = []

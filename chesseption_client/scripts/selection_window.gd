@@ -1,21 +1,38 @@
 class_name Selection_window extends Node2D
 
-@onready var pawn = $pawn
-@onready var bishop = $bishop
-@onready var knight = $knight
-@onready var rook = $rook
-@onready var queen =  $queen
+@onready var pawn = $pieces/pawn
+@onready var bishop = $pieces/bishop
+@onready var knight = $pieces/knight
+@onready var rook = $pieces/rook
+@onready var queen =  $pieces/queen
 
-@onready var underline_1 = $underline1
-@onready var underline_2 = $underline2
-@onready var underline_3 = $underline3
-@onready var underline_4 = $underline4
-@onready var underline_5 = $underline5
+@onready var underline_1 = $pieces/underline1
+@onready var underline_2 = $pieces/underline2
+@onready var underline_3 = $pieces/underline3
+@onready var underline_4 = $pieces/underline4
+@onready var underline_5 = $pieces/underline5
+@onready var selection_animation_window = $SelectionAnimationWindow
+@onready var pieces = $pieces
 
 signal piece_chosen(piece_name: String)
 
 var your_color = ""
 
+func underline_this_piece_by_index(index: int) -> void:
+	selection_animation_window.start_animation()
+	await get_tree().create_timer(1).timeout
+	pieces.show()
+	if index <= 7:
+		underline_1.show()
+	elif index <= 9:
+		underline_2.show()
+	elif index <= 11:
+		underline_3.show()
+	elif index <= 13:
+		underline_4.show()
+	elif index <= 14:
+		underline_5.show()
+	
 func _on_pawn_pressed() -> void:
 	emit_signal("piece_chosen", "pawn")
 func _on_bishop_pressed() -> void:

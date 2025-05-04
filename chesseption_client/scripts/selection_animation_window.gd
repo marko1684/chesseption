@@ -26,38 +26,22 @@ func start_animation(chosen_piece: int) -> void:
 	
 	for piece in pieces.get_children():
 		highlight(piece)
-		await get_tree().create_timer(0.05).timeout
-		unhighlight(piece)
-	
-	for piece in pieces.get_children():
-		highlight(piece)
-		await get_tree().create_timer(0.06).timeout
-		unhighlight(piece)
-	var i = 0
-	for piece in pieces.get_children():
-		highlight(piece)
-		await get_tree().create_timer(0.08).timeout
-		if i == chosen_piece:
-			break
-		else:
-			i += 1
-			unhighlight(piece)
-
-func mandatory_roulette_animation() -> void:
-	for piece in pieces.get_children():
-		highlight(piece)
 		await get_tree().create_timer(0.04).timeout
 		unhighlight(piece)
 	
 	for piece in pieces.get_children():
 		highlight(piece)
-		await get_tree().create_timer(0.05).timeout
+		await get_tree().create_timer(0.04).timeout
 		unhighlight(piece)
-	
+	var i = 0
 	for piece in pieces.get_children():
 		highlight(piece)
-		await get_tree().create_timer(0.06).timeout
-		unhighlight(piece)
+		await get_tree().create_timer(0.04).timeout
+		if i == chosen_piece:
+			break
+		else:
+			i += 1
+			unhighlight(piece)
 	
 func highlight(piece: Sprite2D) -> void:
 	piece.modulate = Color(1.5, 1.5, 1.5, 1)

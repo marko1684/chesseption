@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://drfkvmmmwnkal"]
+[gd_scene load_steps=10 format=3 uid="uid://drfkvmmmwnkal"]
 
 [ext_resource type="Script" uid="uid://bxd31fu4w1pov" path="res://scripts/selection_window.gd" id="1_oktwe"]
 [ext_resource type="Texture2D" uid="uid://bpwnqhee23cxh" path="res://sprites/chess_pieces/beli_piun.png" id="2_mlqle"]
@@ -8,11 +8,15 @@
 [ext_resource type="Texture2D" uid="uid://bv4anbglj81k7" path="res://sprites/chess_pieces/bela_kraljica.png" id="6_tnnxe"]
 [ext_resource type="Texture2D" uid="uid://dwtinug3jm774" path="res://sprites/game_scene/figures_underline.png" id="7_55s5u"]
 [ext_resource type="Texture2D" uid="uid://7rot20g2yll0" path="res://sprites/game_scene/background_pieces.png" id="8_8bndr"]
+[ext_resource type="PackedScene" uid="uid://c4fk3asdt7ngv" path="res://scenes/selection_animation_window.tscn" id="9_qkpx0"]
 
 [node name="Selection_window" type="Node2D"]
 script = ExtResource("1_oktwe")
 
-[node name="pawn" type="Button" parent="."]
+[node name="pieces" type="Node2D" parent="."]
+visible = false
+
+[node name="pawn" type="Button" parent="pieces"]
 offset_left = 10.0
 offset_top = 40.0
 offset_right = 418.0
@@ -22,7 +26,7 @@ focus_mode = 0
 icon = ExtResource("2_mlqle")
 flat = true
 
-[node name="bishop" type="Button" parent="."]
+[node name="bishop" type="Button" parent="pieces"]
 offset_left = 100.0
 offset_top = 40.0
 offset_right = 508.0
@@ -32,7 +36,7 @@ focus_mode = 0
 icon = ExtResource("3_3qewb")
 flat = true
 
-[node name="knight" type="Button" parent="."]
+[node name="knight" type="Button" parent="pieces"]
 offset_left = 190.0
 offset_top = 40.0
 offset_right = 598.0
@@ -42,7 +46,7 @@ focus_mode = 0
 icon = ExtResource("4_tr1rc")
 flat = true
 
-[node name="rook" type="Button" parent="."]
+[node name="rook" type="Button" parent="pieces"]
 offset_left = 272.0
 offset_top = 40.0
 offset_right = 680.0
@@ -52,7 +56,7 @@ focus_mode = 0
 icon = ExtResource("5_2md0c")
 flat = true
 
-[node name="queen" type="Button" parent="."]
+[node name="queen" type="Button" parent="pieces"]
 offset_left = 361.0
 offset_top = 40.0
 offset_right = 769.0
@@ -62,48 +66,50 @@ focus_mode = 0
 icon = ExtResource("6_tnnxe")
 flat = true
 
-[node name="underline1" type="Sprite2D" parent="."]
+[node name="underline1" type="Sprite2D" parent="pieces"]
 visible = false
 z_index = 10
 position = Vector2(53.878, 125)
 scale = Vector2(0.364, 0.3)
 texture = ExtResource("7_55s5u")
 
-[node name="underline2" type="Sprite2D" parent="."]
+[node name="underline2" type="Sprite2D" parent="pieces"]
 visible = false
 z_index = 10
 position = Vector2(145, 125)
 scale = Vector2(0.364, 0.3)
 texture = ExtResource("7_55s5u")
 
-[node name="underline3" type="Sprite2D" parent="."]
+[node name="underline3" type="Sprite2D" parent="pieces"]
 visible = false
 z_index = 10
 position = Vector2(235.878, 125)
 scale = Vector2(0.364, 0.3)
 texture = ExtResource("7_55s5u")
 
-[node name="underline4" type="Sprite2D" parent="."]
+[node name="underline4" type="Sprite2D" parent="pieces"]
 visible = false
 z_index = 10
 position = Vector2(316.878, 125)
 scale = Vector2(0.364, 0.3)
 texture = ExtResource("7_55s5u")
 
-[node name="underline5" type="Sprite2D" parent="."]
+[node name="underline5" type="Sprite2D" parent="pieces"]
 visible = false
 z_index = 10
 position = Vector2(405.878, 125)
 scale = Vector2(0.364, 0.3)
 texture = ExtResource("7_55s5u")
 
-[node name="gray_bar" type="Sprite2D" parent="."]
+[node name="gray_bar" type="Sprite2D" parent="pieces"]
 position = Vector2(258, 94)
 scale = Vector2(1, 0.5)
 texture = ExtResource("8_8bndr")
 
-[connection signal="pressed" from="pawn" to="." method="_on_pawn_pressed"]
-[connection signal="pressed" from="bishop" to="." method="_on_bishop_pressed"]
-[connection signal="pressed" from="knight" to="." method="_on_knight_pressed"]
-[connection signal="pressed" from="rook" to="." method="_on_rook_pressed"]
-[connection signal="pressed" from="queen" to="." method="_on_queen_pressed"]
+[node name="SelectionAnimationWindow" parent="." instance=ExtResource("9_qkpx0")]
+
+[connection signal="pressed" from="pieces/pawn" to="." method="_on_pawn_pressed"]
+[connection signal="pressed" from="pieces/bishop" to="." method="_on_bishop_pressed"]
+[connection signal="pressed" from="pieces/knight" to="." method="_on_knight_pressed"]
+[connection signal="pressed" from="pieces/rook" to="." method="_on_rook_pressed"]
+[connection signal="pressed" from="pieces/queen" to="." method="_on_queen_pressed"]

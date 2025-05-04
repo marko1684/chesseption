@@ -12,6 +12,7 @@ anchors_preset = 0
 script = ExtResource("1_41dp7")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 509.0
@@ -53,3 +54,10 @@ offset_right = 333.0
 offset_bottom = 96.0
 text = "Username1 has sent you a friend  request."
 autowrap_mode = 2
+
+[connection signal="mouse_entered" from="ColorRect/decline_button" to="." method="_on_decline_button_mouse_entered"]
+[connection signal="mouse_exited" from="ColorRect/decline_button" to="." method="_on_decline_button_mouse_exited"]
+[connection signal="pressed" from="ColorRect/decline_button" to="." method="_on_decline_button_pressed"]
+[connection signal="mouse_entered" from="ColorRect/accept_button" to="." method="_on_accept_button_mouse_entered"]
+[connection signal="mouse_exited" from="ColorRect/accept_button" to="." method="_on_accept_button_mouse_exited"]
+[connection signal="pressed" from="ColorRect/accept_button" to="." method="_on_accept_button_pressed"]

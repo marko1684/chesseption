@@ -15,5 +15,6 @@ func _on_notifications_button_pressed() -> void:
 	notifications_screen.show()
 
 func _on_back_button_pressed() -> void:
+	general_info.get_friends()
 	general_info.show()
 	notifications_screen.hide()

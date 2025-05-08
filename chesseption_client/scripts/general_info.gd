@@ -1,4 +1,4 @@
-class_name Profile_screen extends Node2D
+class_name General_info extends Node2D
 
 @onready var back_to_main_menu_button = $Back_to_main_menu
 @onready var notifications_button = $Notifications_button
@@ -13,6 +13,8 @@ class_name Profile_screen extends Node2D
 @onready var username_label = $Username_label
 @onready var finish_username_editing_button = $Finish_username_editing
 @onready var username_taken_label = $Username_taken_label
+
+@onready var friendlist_container = $ScrollContainer/VBoxContainer
 
 signal notifications_button_pressed()
 signal back_to_main_menu_button_pressed()
@@ -104,11 +106,45 @@ func _on_send_friend_request_button_pressed() -> void:
 	else:
 		name_lenght_warning_label.show()
 
+func get_friends() -> void:
+	var headers = ["Content-Type: application/json"]
+	
+	$HTTPRequest_get_friends.request(
+		GameState.server_address + "/player/get_friends/" + GameState.your_username,
+		headers,
+		HTTPClient.METHOD_GET
+	)
+
+func _on_http_request_get_friends_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response_text = body.get_string_from_utf8()
+	if response_text == "-1" or response_text == "":
+		print("no friends :'(")
+	else:
+		var json = JSON.new()
+		var parse_result = json.parse(response_text)
+		if parse_result == OK:
+			var friend_data: Array = json.get_data()
+			add_friends(friend_data)
+		else:
+			print("Greška pri parsiranju JSON-a:", parse_result)
+
+func add_friends(friend_data: Array) -> void:
+	for friend in friendlist_container.get_children():
+		friend.queue_free()
+
+	for friend_dict in friend_data:
+		if friend_dict.has("uid"):
+			var username = str(friend_dict["uid"])
+			var friend_request_scene = preload("res://scenes/friend_scene.tscn")
+			var friend_request = friend_request_scene.instantiate()
+			friendlist_container.add_child(friend_request)
+			friend_request.name_label.set_text(username)
+
+
 func create_friend_request(player_name: String) -> void:
 	var data = {
-		"uid": GameState.your_username,
-		"icon": GameState.your_icon,
-		"player_id": player_name
+		"player1_id": GameState.your_username,
+		"player2_id": player_name
 	}
 	var json_data = JSON.stringify(data)
 	var headers = ["Content-Type: application/json"]
@@ -126,6 +162,7 @@ func _on_http_request_friend_request_request_completed(result: int, response_cod
 		player_not_found_warning_label.show()
 	else:
 		request_sent_label.show()
+	print(response)
 
 	
 func _on_send_friend_request_button_mouse_exited() -> void:

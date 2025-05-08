@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://d14qu0ic8ajr8"]
+
+[ext_resource type="Texture2D" uid="uid://cg5eap0t78t86" path="res://sprites/animation/dijamant/diamond_3.png" id="1_6eeoy"]
+[ext_resource type="Script" uid="uid://d2gf7xn3ckkcr" path="res://scripts/friend_scene.gd" id="1_i8pw2"]
+
+[node name="FriendScene" type="Control"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_i8pw2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 120)
+offset_left = 11.0
+offset_top = 13.0
+offset_right = 525.0
+offset_bottom = 118.0
+color = Color(0.688978, 0.501251, 0.229668, 1)
+
+[node name="Username_label" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_left = 148.0
+offset_top = 40.0
+offset_right = 398.0
+offset_bottom = 111.0
+text = "username"
+
+[node name="icon_sprite" type="Sprite2D" parent="ColorRect"]
+position = Vector2(52, 55)
+scale = Vector2(0.14181, 0.164869)
+texture = ExtResource("1_6eeoy")

@@ -55,9 +55,12 @@ offset_bottom = 96.0
 text = "Username1 has sent you a friend  request."
 autowrap_mode = 2
 
+[node name="HTTPRequest_accepted" type="HTTPRequest" parent="."]
+
 [connection signal="mouse_entered" from="ColorRect/decline_button" to="." method="_on_decline_button_mouse_entered"]
 [connection signal="mouse_exited" from="ColorRect/decline_button" to="." method="_on_decline_button_mouse_exited"]
 [connection signal="pressed" from="ColorRect/decline_button" to="." method="_on_decline_button_pressed"]
 [connection signal="mouse_entered" from="ColorRect/accept_button" to="." method="_on_accept_button_mouse_entered"]
 [connection signal="mouse_exited" from="ColorRect/accept_button" to="." method="_on_accept_button_mouse_exited"]
 [connection signal="pressed" from="ColorRect/accept_button" to="." method="_on_accept_button_pressed"]
+[connection signal="request_completed" from="HTTPRequest_accepted" to="." method="_on_http_request_accepted_request_completed"]

@@ -105,6 +105,7 @@ func _on_play_button_pressed() -> void:
 	join_or_create_game_screen.show()
 
 func _on_view_profile_button_pressed() -> void:
+	profile_screen.general_info.get_friends()
 	profile_screen.show()
 	main_menu.hide()
 
@@ -158,6 +159,7 @@ func login_player() -> void:
 func _on_http_request_login_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	print(response)
+	poll_notifications()
 
 func join_lobby(game_type: int) -> void:
 	GameState.game_type = game_type
@@ -187,12 +189,42 @@ func _on_http_request_join_game_request_completed(result: int, response_code: in
 		var game_id = data["_id"]
 		GameState.lobby_id = game_id
 		print("Game ID: ", GameState.lobby_id)
-		get_game_state()
 		find_me_a_game = true 
+		get_game_state()
 	else:
 		print("Server is down, error number: ", error)
 
+func poll_notifications() -> void:
+	var headers = ["Content-Type: application/json"]
 	
+	$HTTPRequest_poll_notifications.request(
+		GameState.server_address + "/player/state/" + GameState.your_username,
+		headers,
+		HTTPClient.METHOD_GET
+	)
+	
+func _on_http_request_poll_notifications_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response = body.get_string_from_utf8()
+	if response.contains("-1") or response == "": #TODO
+		print('-1')
+	else:
+		print(response)
+		process_response_data(response)
+	await get_tree().create_timer(7).timeout
+	poll_notifications()
+
+func process_response_data(response: String) -> void:
+	var json = JSON.new()
+	var error = json.parse(response)
+	if error == OK:
+		var data = json.get_data()
+		var first_item = data[0]  
+		var player_name = first_item["player1_id"]
+		print(player_name) 
+		profile_screen.notifications_screen.add_notification("friend_request","", player_name)
+	else:
+		print("JSON parsing error")
+
 func get_game_state() -> void:
 	if find_me_a_game:
 		var headers = ["Content-Type: application/json"]
@@ -202,7 +234,6 @@ func get_game_state() -> void:
 			headers,
 			HTTPClient.METHOD_GET
 		)
-
 
 func _on_http_request_get_game_state_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()

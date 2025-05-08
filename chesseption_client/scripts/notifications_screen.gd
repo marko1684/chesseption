@@ -3,6 +3,8 @@ class_name Notification_screen extends Node2D
 @onready var back_button = $Back_button
 @onready var container = $ScrollContainer/VBoxContainer
 
+var pending_friend_requests: Array = []
+
 signal back_button_pressed()
 
 func _on_button_pressed() -> void:
@@ -13,10 +15,13 @@ func _on_button_2_pressed() -> void:
 
 func add_notification(type: String, icon: String, username: String) -> void:
 	if type == "friend_request":
-		var friend_request_scene = preload("res://scenes/notifications/friend_request.tscn")
-		var friend_request = friend_request_scene.instantiate()
-		container.add_child(friend_request)
-		friend_request.text_label.set_text(username + " has sent you a friend request.") 
+		if !pending_friend_requests.has(username):
+			pending_friend_requests.append(username)
+			var friend_request_scene = preload("res://scenes/notifications/friend_request.tscn")
+			var friend_request = friend_request_scene.instantiate()
+			friend_request.request_is_from = username
+			container.add_child(friend_request)
+			friend_request.text_label.set_text(username + " has sent you a friend request.") 
 	elif type == "game_invitation":
 		var game_invitation_scene = preload("res://scenes/notifications/game_invitation.tscn")
 		var game_invitation = game_invitation_scene.instantiate()

@@ -107,6 +107,7 @@ scale = Vector2(1, 0.5)
 texture = ExtResource("8_8bndr")
 
 [node name="SelectionAnimationWindow" parent="." instance=ExtResource("9_qkpx0")]
+visible = false
 
 [connection signal="pressed" from="pieces/pawn" to="." method="_on_pawn_pressed"]
 [connection signal="pressed" from="pieces/bishop" to="." method="_on_bishop_pressed"]

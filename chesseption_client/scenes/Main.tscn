@@ -48,7 +48,10 @@ visible = false
 
 [node name="HTTPRequest_cancel_search" type="HTTPRequest" parent="."]
 
+[node name="HTTPRequest_poll_notifications" type="HTTPRequest" parent="."]
+
 [connection signal="request_completed" from="HTTPRequest_login" to="." method="_on_http_request_login_request_completed"]
 [connection signal="request_completed" from="HTTPRequest_join_game" to="." method="_on_http_request_join_game_request_completed"]
 [connection signal="request_completed" from="HTTPRequest_get_game_state" to="." method="_on_http_request_get_game_state_request_completed"]
 [connection signal="request_completed" from="HTTPRequest_cancel_search" to="." method="_on_http_request_cancel_search_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_poll_notifications" to="." method="_on_http_request_poll_notifications_request_completed"]

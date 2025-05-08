@@ -19,7 +19,7 @@ signal piece_chosen(piece_name: String)
 var your_color = ""
 
 func underline_this_piece_by_index(index: int) -> void:
-	selection_animation_window.start_animation()
+	#selection_animation_window.start_animation(index)
 	await get_tree().create_timer(1).timeout
 	pieces.show()
 	if index <= 7:

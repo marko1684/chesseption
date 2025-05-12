@@ -5,16 +5,42 @@ class_name Game_invitation extends Control
 @onready var text_label = $ColorRect/Label
 @onready var icon_sprite = $ColorRect/Player_icon
 
+var request_is_from: String = ""
+
 signal game_invite_accepted()
 signal game_invite_declined()
 
 func _on_accept_button_pressed() -> void:
+	game_invitation_accepted()
 	accept_button.hide()
 	decline_button.hide()
 func _on_decline_button_pressed() -> void:
 	accept_button.hide()
 	decline_button.hide()
+
+func game_invitation_accepted() -> void:
+	var data = {
+		"player1_id": GameState.your_username,
+		"player2_id": request_is_from
+	}
+	var json_data = JSON.stringify(data)
+	var headers = ["Content-Type: application/json"]
 	
+	$HTTPRequest_game_invitation_accepted.request(
+		GameState.server_address + "/player/accept_game_invitation",
+		headers,
+		HTTPClient.METHOD_POST,
+		json_data
+	)
+
+func _on_http_request_game_invitation_accepted_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response = body.get_string_from_utf8()
+	if response == "-1" or response == "":
+		print('-1')
+	else:
+		emit_signal("game_invite_accepted")
+
+
 func _on_decline_button_mouse_entered() -> void:
 	decline_button.scale.x += 0.08
 	decline_button.scale.y += 0.08

@@ -2,7 +2,7 @@ class_name Custom_game_lobby extends Node2D
 
 @onready var back_button = $Back_button
 @onready var start_game_button = $Start_game_button
-@onready var container = $ScrollContainer/VBoxContainer
+@onready var friendlist_container = $ScrollContainer/VBoxContainer
 
 @onready var player_1_icon = $Player_1/Sprite2D
 @onready var player_1_name = $Player_1/Label
@@ -40,6 +40,41 @@ func _on_back_button_pressed() -> void:
 	reset_custom_game_lobby_screen()
 	lobby_destroyed()#emit signal that lobby doesnt exist anymore
 	emit_signal("back_button_pressed")
+	
+func get_friends() -> void:
+	var headers = ["Content-Type: application/json"]
+	
+	$HTTPRequest_get_friends.request(
+		GameState.server_address + "/player/get_friends/" + GameState.your_username,
+		headers,
+		HTTPClient.METHOD_GET
+	)
+
+func _on_http_request_get_friends_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response_text = body.get_string_from_utf8()
+	if response_text == "-1" or response_text == "":
+		print("no friends :'(")
+	else:
+		var json = JSON.new()
+		var parse_result = json.parse(response_text)
+		if parse_result == OK:
+			var friend_data: Array = json.get_data()
+			add_friends(friend_data)
+		else:
+			print("JSON parsing error: ", parse_result)
+
+func add_friends(friend_data: Array) -> void:
+	for friend in friendlist_container.get_children():
+		friend.queue_free()
+
+	for friend_dict in friend_data:
+		if friend_dict.has("uid"):
+			var username = str(friend_dict["uid"])
+			var friend_invitation_scene = preload("res://scenes/friend_invitation_scene.tscn")
+			var friend_invitation = friend_invitation_scene.instantiate()
+			friendlist_container.add_child(friend_invitation)
+			friend_invitation.name_label.set_text(username)
+
 func lobby_destroyed() -> void:
 	var data = {
 			"uid": GameState.your_username #and ids of all players currently in lobby

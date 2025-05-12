@@ -36,7 +36,6 @@ func _on_http_request_accepted_request_completed(result: int, response_code: int
 	if response == "-1" or response == "":
 		print('-1')
 	else:
-		print('jbg frende, moras jest. na silu na silu.')
 		add_a_friend(response)
 
 func add_a_friend(respone) -> void:

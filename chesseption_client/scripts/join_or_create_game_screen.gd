@@ -14,5 +14,6 @@ func _on_back_button_pressed() -> void:
 
 func _on_create_custom_game() -> void:
 	custom_game_lobby.add_player_to_your_lobby("icon_path", GameState.your_username)
+	custom_game_lobby.get_friends()
 	join_game_screen.hide()
 	custom_game_lobby.show()

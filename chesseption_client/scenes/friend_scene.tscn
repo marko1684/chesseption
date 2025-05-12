@@ -11,6 +11,7 @@ script = ExtResource("1_i8pw2")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(0, 120)
+layout_mode = 0
 offset_left = 11.0
 offset_top = 13.0
 offset_right = 525.0

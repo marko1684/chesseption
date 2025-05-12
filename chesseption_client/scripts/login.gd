@@ -61,6 +61,10 @@ func _on_sign_in_google_button_pressed():
 		
 
 func _on_google_login_button_pressed() -> void:
+	var username  = username_textbox.text
+	emit_signal("login_pressed", username)
+
+func tmp() -> void:
 	var provider: AuthProvider = Firebase.Auth.get_GoogleProvider()
 	var platform := OS.get_name()
 

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cg5eap0t78t86" path="res://sprites/animation/dijamant/diamond_3.png" id="2_bcm0o"]
 
 [node name="FriendInvitationScene" type="Control"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_l62hb")
@@ -37,3 +38,8 @@ text = "username"
 position = Vector2(52, 55)
 scale = Vector2(0.14181, 0.164869)
 texture = ExtResource("2_bcm0o")
+
+[node name="HTTPRequest_game_invitation" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="ColorRect/Invite_button" to="." method="_on_invite_button_pressed"]
+[connection signal="request_completed" from="HTTPRequest_game_invitation" to="." method="_on_http_request_game_invitation_request_completed"]

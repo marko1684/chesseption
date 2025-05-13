@@ -34,7 +34,6 @@ func _on_profile_button_mouse_entered() -> void:
 	view_profile_button.scale.y += 0.08
 	view_profile_button.position.x -= 10
 
-
 func _on_profile_button_mouse_exited() -> void:
 	view_profile_button.scale.x -= 0.08
 	view_profile_button.scale.y -= 0.08

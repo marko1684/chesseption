@@ -9,6 +9,7 @@ func _on_invite_button_pressed() -> void:
 
 func create_game_invitation(player_name: String) -> void:
 	var data = {
+		"lobby_id": GameState.lobby_id,
 		"player1_id": GameState.your_username,
 		"player2_id": player_name
 	}
@@ -16,7 +17,7 @@ func create_game_invitation(player_name: String) -> void:
 	var headers = ["Content-Type: application/json"]
 	
 	$HTTPRequest_game_invitation.request(
-		GameState.server_address + "/player/friend_request",
+		GameState.server_address + "/game/invite_friend_to_lobby",
 		headers,
 		HTTPClient.METHOD_POST,
 		json_data

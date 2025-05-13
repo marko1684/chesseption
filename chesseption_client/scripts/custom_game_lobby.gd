@@ -14,28 +14,56 @@ class_name Custom_game_lobby extends Node2D
 @onready var player_4_name = $Player_4/Label
 
 var number_of_players_in_lobby = 0
+var all_players_names: Array = []
+var all_players_icons: Array = []
 
 signal back_button_pressed()
 signal start_custom_game()
 
-func add_player_to_your_lobby(icon: String, username: String) -> void:
-	if number_of_players_in_lobby == 0:
-		player_1_name.set_text(username)
-	elif number_of_players_in_lobby == 1:
-		player_2_name.set_text(username)
-	elif number_of_players_in_lobby == 2:
-		player_3_name.set_text(username)
-	elif number_of_players_in_lobby == 3:
-		player_4_name.set_text(username)
-	number_of_players_in_lobby += 1
+func initialize() -> void:
+	add_player_to_your_lobby("icon_path", GameState.your_username)
+	get_friends()
+	var data = {
+			"player_id": GameState.your_username
+		}
+	var json_data = JSON.stringify(data)
+	var headers = ["Content-Type: application/json"]
+	
+	$HTTPRequest_initialization.request(
+		GameState.server_address + "/game/create_custom_lobby/",
+		headers,
+		HTTPClient.METHOD_POST,
+		json_data
+	)
 
+func _on_http_request_initialization_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response = body.get_string_from_utf8()
+	var json = JSON.new()
+	var error = json.parse(response)
+
+	if error == OK:
+		var data = json.get_data()
+		var game_id = data["_id"]
+		GameState.lobby_id = game_id
+		print(GameState.lobby_id)
+		poll()
+	else:
+		print("Server is down, error number: ", error)
+
+func add_player_to_your_lobby(icon: String, username: String) -> void:
+	number_of_players_in_lobby += 1
+	all_players_names.append(username)
+	all_players_icons.append(icon)
+	
 func reset_custom_game_lobby_screen() -> void:
 	player_1_name.set_text("")
 	player_2_name.set_text("")
 	player_3_name.set_text("")
 	player_4_name.set_text("")
 	number_of_players_in_lobby = 0
-
+	all_players_names = []
+	all_players_icons = []
+	
 func _on_back_button_pressed() -> void:
 	reset_custom_game_lobby_screen()
 	lobby_destroyed()#emit signal that lobby doesnt exist anymore
@@ -77,13 +105,13 @@ func add_friends(friend_data: Array) -> void:
 
 func lobby_destroyed() -> void:
 	var data = {
-			"uid": GameState.your_username #and ids of all players currently in lobby
+			"lobby_id": GameState.lobby_id
 		}
 	var json_data = JSON.stringify(data)
 	var headers = ["Content-Type: application/json"]
 		
 	$HTTPRequest_lobby_destroyed.request(
-		GameState.server_address + "/player/custom_game/lobby",
+		GameState.server_address + "/game/delete_custom_lobby",
 		headers,
 		HTTPClient.METHOD_POST,
 		json_data
@@ -94,19 +122,20 @@ func _on_http_request_lobby_destroyed_request_completed(result: int, response_co
 	print(response)
 
 func _on_start_game_button_pressed() -> void:
-	emit_signal("start_custom_game")
+	if number_of_players_in_lobby >= 2  and number_of_players_in_lobby <= 4:
+		GameState.game_type = number_of_players_in_lobby
+		start_game()
+		emit_signal("start_custom_game")
 
 func start_game() -> void:
-	GameState.game_type = number_of_players_in_lobby
 	var data = {
-		"player_id": GameState.your_username,
-		"game_type": number_of_players_in_lobby
+		"lobby_id": GameState.lobby_id
 	}
 	var json_data = JSON.stringify(data)
 	var headers = ["Content-Type: application/json"]
 	
 	$HTTPRequest_start_game.request(
-		GameState.server_address + "/game/join_lobby",
+		GameState.server_address + "/game/start_custom_game",
 		headers,
 		HTTPClient.METHOD_POST,
 		json_data
@@ -115,7 +144,6 @@ func start_game() -> void:
 func _on_http_request_start_game_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	print(response)
-
 	var json = JSON.new()
 	var error = json.parse(response)
 
@@ -124,7 +152,6 @@ func _on_http_request_start_game_request_completed(result: int, response_code: i
 		var game_id = data["_id"]
 		GameState.lobby_id = game_id
 		print("Game ID: ", GameState.lobby_id)
-		#get_game_state()
 	else:
 		print("Server is down, error number: ", error)
 
@@ -144,3 +171,55 @@ func _on_start_game_button_mouse_exited() -> void:
 	start_game_button.scale.x -= 0.08
 	start_game_button.scale.y -= 0.08
 	start_game_button.position.x += 10
+
+func poll() -> void:
+	var headers = ["Content-Type: application/json"]
+	
+	$HTTPRequest_poll.request(
+		GameState.server_address + "/game/get_lobby_state/" + GameState.lobby_id,
+		headers,
+		HTTPClient.METHOD_GET
+	)
+		
+func _on_http_request_poll_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	var response = body.get_string_from_utf8()
+	var json = JSON.new()
+	var error = json.parse(response)
+	
+	GameState.all_players_names = []
+	if response != "0" :
+		if error == OK:
+			var data = json.get_data()
+			var players = data["players"]
+			
+			for player in players:
+				if "player_id" in player:
+					var player_name = player["player_id"]
+					GameState.all_players_names.append(player_name)
+			save_response_data()
+			
+			if data["started"] == 1:
+				emit_signal("start_custom_game")
+			else:
+				await get_tree().create_timer(2).timeout
+				poll()
+
+func save_response_data() -> void:
+	reset_custom_game_lobby_screen()
+	var players: Array = []
+	for player_name in GameState.all_players_names:
+		add_player_to_your_lobby("icon", player_name)
+	update_players_in_lobby_names(all_players_names)
+	update_players_in_lobby_icons(all_players_icons)
+	
+func update_players_in_lobby_names(all_players_names: Array) -> void:
+	player_1_name.set_text(all_players_names[0])
+	if number_of_players_in_lobby == 2:
+		player_2_name.set_text(all_players_names[1])
+		if number_of_players_in_lobby == 3:
+			player_3_name.set_text(all_players_names[2])
+			if number_of_players_in_lobby == 4:
+				player_4_name.set_text(all_players_names[3])
+		
+func update_players_in_lobby_icons(all_players_icons: Array) -> void:
+	pass

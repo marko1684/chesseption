@@ -105,7 +105,7 @@ func _on_move_challanged() -> void:
 func _on_http_request_move_challanged_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	if response == "-1":
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(2).timeout
 		get_game_state()
 	else:
 		print(response)
@@ -114,7 +114,7 @@ func _on_http_request_move_challanged_request_completed(result: int, response_co
 func _on_http_request_move_accepted_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	if response == "-1":
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(2).timeout
 		get_game_state()
 	else:
 		print(response)
@@ -826,7 +826,7 @@ func make_move() -> void:
 func _on_http_request_make_move_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	if response == "-1":
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(2).timeout
 		get_game_state()
 	else:
 		print(response)

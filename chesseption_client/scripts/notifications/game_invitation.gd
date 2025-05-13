@@ -6,6 +6,7 @@ class_name Game_invitation extends Control
 @onready var icon_sprite = $ColorRect/Player_icon
 
 var request_is_from: String = ""
+var lobby_id
 
 signal game_invite_accepted()
 signal game_invite_declined()
@@ -20,24 +21,25 @@ func _on_decline_button_pressed() -> void:
 
 func game_invitation_accepted() -> void:
 	var data = {
-		"player1_id": GameState.your_username,
-		"player2_id": request_is_from
+		"lobby_id": lobby_id,
+		"player_id": GameState.your_username
 	}
 	var json_data = JSON.stringify(data)
 	var headers = ["Content-Type: application/json"]
 	
 	$HTTPRequest_game_invitation_accepted.request(
-		GameState.server_address + "/player/accept_game_invitation",
+		GameState.server_address + "/game/accept_friend_invite_to_lobby",
 		headers,
 		HTTPClient.METHOD_POST,
 		json_data
 	)
-
+	
 func _on_http_request_game_invitation_accepted_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var response = body.get_string_from_utf8()
 	if response == "-1" or response == "":
 		print('-1')
 	else:
+		GameState.lobby_id = lobby_id
 		emit_signal("game_invite_accepted")
 
 

@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=3 uid="uid://r5eti5w63n7t"]
+
+[ext_resource type="Script" uid="uid://debgb6qsc7i71" path="res://scripts/waiting_lobby.gd" id="1_xfi1d"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yjjqf"]
+font_size = 35
+
+[node name="WaitingLobby" type="Node2D"]
+script = ExtResource("1_xfi1d")
+
+[node name="Leave_lobby_button" type="Button" parent="."]
+offset_left = 150.0
+offset_top = 1055.0
+offset_right = 396.0
+offset_bottom = 1129.0
+text = "Leave lobby"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 60.0
+offset_top = 37.0
+offset_right = 458.0
+offset_bottom = 100.0
+text = "Lobby"
+label_settings = SubResource("LabelSettings_yjjqf")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Player_1" type="Node2D" parent="."]
+position = Vector2(61, 202)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player_1"]
+position = Vector2(3.63373, 4.1703)
+
+[node name="Label" type="Label" parent="Player_1"]
+offset_left = 88.0
+offset_top = -18.0
+offset_right = 401.0
+offset_bottom = 33.0
+
+[node name="Player_2" type="Node2D" parent="."]
+position = Vector2(68, 306)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player_2"]
+position = Vector2(3.63373, 4.1703)
+
+[node name="Label" type="Label" parent="Player_2"]
+offset_left = 88.0
+offset_top = -18.0
+offset_right = 401.0
+offset_bottom = 33.0
+
+[node name="Player_3" type="Node2D" parent="."]
+position = Vector2(70, 395)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player_3"]
+position = Vector2(3.63373, 4.1703)
+
+[node name="Label" type="Label" parent="Player_3"]
+offset_left = 88.0
+offset_top = -18.0
+offset_right = 401.0
+offset_bottom = 33.0
+
+[node name="Player_4" type="Node2D" parent="."]
+position = Vector2(75, 485)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player_4"]
+position = Vector2(3.63373, 4.1703)
+
+[node name="Label" type="Label" parent="Player_4"]
+offset_left = 88.0
+offset_top = -18.0
+offset_right = 401.0
+offset_bottom = 33.0
+
+[node name="HTTPRequest_left_lobby" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_poll" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="Leave_lobby_button" to="." method="_on_leave_lobby_button_pressed"]
+[connection signal="request_completed" from="HTTPRequest_left_lobby" to="." method="_on_http_request_left_lobby_request_completed"]
+[connection signal="request_completed" from="HTTPRequest_poll" to="." method="_on_http_request_poll_request_completed"]

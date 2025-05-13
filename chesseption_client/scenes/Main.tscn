@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://lpq42cincwa4"]
+[gd_scene load_steps=11 format=3 uid="uid://lpq42cincwa4"]
 
 [ext_resource type="Script" uid="uid://nuq08iqevd0d" path="res://scripts/Main.gd" id="1_rarhs"]
 [ext_resource type="PackedScene" uid="uid://uduuggs45ldx" path="res://scenes/main_menu.tscn" id="2_vcsgt"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c8o7se0j8puwy" path="res://scenes/Join_or_create_game_screen.tscn" id="3_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://bgt5m0tanj66i" path="res://scenes/Game.tscn" id="4_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://dmi5kyshq6kw2" path="res://scenes/OptionsScreen.tscn" id="5_c01mt"]
+[ext_resource type="PackedScene" uid="uid://r5eti5w63n7t" path="res://scenes/waiting_lobby.tscn" id="6_lhr70"]
 [ext_resource type="PackedScene" uid="uid://b6alnkqic0mgk" path="res://scenes/rules_screen.tscn" id="7_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://dx8e53ul241nt" path="res://scenes/login.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://bvasg4kun8wco" path="res://scenes/EndGameScreen.tscn" id="8_q8u5g"]
@@ -23,6 +24,9 @@ visible = false
 visible = false
 
 [node name="OptionsScreen" parent="." instance=ExtResource("5_c01mt")]
+visible = false
+
+[node name="WaitingLobby" parent="." instance=ExtResource("6_lhr70")]
 visible = false
 
 [node name="Game" parent="." instance=ExtResource("4_nxtc6")]

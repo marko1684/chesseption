@@ -12,8 +12,6 @@ func _on_back_button_mouse_entered() -> void:
 	back_button.scale.y += 0.08
 	back_button.position.x -= 10
 
-
-
 func _on_back_button_mouse_exited() -> void:
 	back_button.scale.x -= 0.08
 	back_button.scale.y -= 0.08
